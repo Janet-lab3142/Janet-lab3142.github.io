@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Janet Soo Yu Ting</title>
+<meta name="description" content="Janet Soo Yu Ting — Software Engineering undergraduate at Universiti Malaya, Yayasan Khazanah Watan Scholar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1d1d1f; --ink-2:#4a4a50; --ink-3:#86868b;
+  --line:rgba(0,0,0,.08); --paper:#ffffff; --paper-2:#f5f5f7;
+  --accent:#0a5cff; --accent-soft:#e8f0ff;
+  --menubar-h:28px;
+  --font:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --ease:cubic-bezier(.2,.9,.25,1.05);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--font);color:var(--ink);background:#dfe7f3;overflow:hidden;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit}
+
+/* ---------- Desktop ---------- */
+#desktop{position:fixed;inset:0;overflow:hidden;
+  background:
+    radial-gradient(60% 70% at 15% 20%, #ffd9a8 0%, transparent 60%),
+    radial-gradient(55% 60% at 85% 15%, #a9c8ff 0%, transparent 60%),
+    radial-gradient(70% 70% at 70% 90%, #f3c6e8 0%, transparent 60%),
+    linear-gradient(160deg,#eef3fb,#dfe7f3);
+}
+.wallpaper{position:absolute;inset:var(--menubar-h) 0 0 0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;pointer-events:none;padding:0 16px}
+.hero-name{font-weight:900;letter-spacing:-.04em;line-height:.88;font-size:clamp(56px,11vw,168px);color:#1d1d1f;
+  opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .7s var(--ease)}
+.hero-name span{display:block}
+.hero-sub{margin-top:22px;font-size:clamp(14px,1.4vw,18px);font-weight:500;color:var(--ink-2);opacity:0;transition:opacity .6s ease .25s}
+body.intro-in .hero-name{opacity:1;transform:none}
+body.intro-in .hero-sub{opacity:1}
+
+/* ---------- Menu bar ---------- */
+.menubar{position:absolute;top:0;left:0;right:0;height:var(--menubar-h);display:flex;align-items:center;gap:18px;padding:0 14px;
+  font-size:13px;background:rgba(255,255,255,.45);backdrop-filter:blur(20px) saturate(1.6);-webkit-backdrop-filter:blur(20px) saturate(1.6);z-index:50}
+.menubar .mark{width:16px;height:16px;border-radius:5px;background:var(--ink);color:#fff;font-size:10px;font-weight:800;display:grid;place-items:center}
+.menubar #appName{font-weight:700}
+.menubar .spacer{flex:1}
+.menubar .clock{font-variant-numeric:tabular-nums;font-weight:500}
+.rec-toggle{display:flex;align-items:center;gap:8px;font-weight:600;font-size:12px;padding:3px 8px;border-radius:6px}
+.rec-toggle:hover{background:rgba(0,0,0,.06)}
+.switch{width:28px;height:16px;border-radius:99px;background:rgba(0,0,0,.2);position:relative;transition:background .2s}
+.switch::after{content:"";position:absolute;top:2px;left:2px;width:12px;height:12px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .2s var(--ease)}
+body.recruiter .switch{background:#34c759}
+body.recruiter .switch::after{transform:translateX(12px)}
+
+/* ---------- Window ---------- */
+.window{position:absolute;z-index:20;top:calc(var(--menubar-h) + 22px);left:50%;width:min(1040px,calc(100vw - 80px));height:calc(100vh - var(--menubar-h) - 140px);
+  transform:translateX(-50%);background:var(--paper);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 0 0 .5px rgba(0,0,0,.18),0 24px 70px rgba(30,40,70,.28),0 6px 18px rgba(30,40,70,.12);
+  transition:top .35s var(--ease),width .35s var(--ease),height .35s var(--ease),border-radius .35s}
+.window[hidden]{display:none}
+.window.full{top:var(--menubar-h);width:100vw;height:calc(100vh - var(--menubar-h));border-radius:0}
+.window.opening{animation:winOpen .38s var(--ease) both}
+.window.closing{animation:winClose .3s ease-in both}
+@keyframes winOpen{from{opacity:0;transform:translate(var(--dx,-50%),var(--dy,40vh)) scale(.06)}to{opacity:1;transform:translateX(-50%) scale(1)}}
+@keyframes winClose{from{opacity:1;transform:translateX(-50%) scale(1)}to{opacity:0;transform:translate(var(--dx,-50%),var(--dy,40vh)) scale(.06)}}
+.titlebar{height:44px;flex:none;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid var(--line);background:var(--paper-2);position:relative}
+.lights{display:flex;gap:8px;z-index:1}
+.lights button{width:12px;height:12px;border-radius:50%;display:grid;place-items:center;font-size:9px;line-height:1;color:transparent;font-weight:800}
+.lights .red{background:#ff5f57;box-shadow:inset 0 0 0 .5px rgba(0,0,0,.15)}
+.lights .yellow{background:#febc2e;box-shadow:inset 0 0 0 .5px rgba(0,0,0,.15)}
+.lights .green{background:#28c840;box-shadow:inset 0 0 0 .5px rgba(0,0,0,.15)}
+.lights:hover button{color:rgba(0,0,0,.55)}
+.titlebar .title{position:absolute;left:0;right:0;text-align:center;font-size:13px;font-weight:600;color:var(--ink-2);pointer-events:none}
+.mobile-back{display:none}
+.win-body{flex:1;overflow:auto;overscroll-behavior:contain}
+.win-body.swap{animation:fadeIn .22s ease both}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+/* ---------- Dock ---------- */
+.dock{position:absolute;z-index:30;bottom:12px;left:50%;transform:translateX(-50%);display:flex;align-items:flex-end;gap:10px;padding:8px 10px;
+  border-radius:22px;background:rgba(255,255,255,.4);backdrop-filter:blur(24px) saturate(1.6);-webkit-backdrop-filter:blur(24px) saturate(1.6);
+  box-shadow:0 0 0 .5px rgba(255,255,255,.6) inset,0 0 0 .5px rgba(0,0,0,.12),0 10px 30px rgba(30,40,70,.18)}
+.dock .sep{width:1px;align-self:stretch;margin:4px 2px;background:rgba(0,0,0,.15)}
+.app{position:relative;display:flex;flex-direction:column;align-items:center;text-decoration:none}
+.icon{width:54px;height:54px;border-radius:13px;display:grid;place-items:center;transition:transform .18s var(--ease);box-shadow:0 2px 6px rgba(0,0,0,.15)}
+.icon svg{width:60%;height:60%}
+.app:hover .icon{transform:translateY(-8px) scale(1.12)}
+.app .label{position:absolute;bottom:calc(100% + 14px);white-space:nowrap;font-size:12px;font-weight:500;padding:4px 10px;border-radius:6px;
+  background:rgba(240,240,242,.92);box-shadow:0 2px 10px rgba(0,0,0,.15);opacity:0;pointer-events:none;transition:opacity .12s}
+.app:hover .label{opacity:1}
+.app .dot{width:4px;height:4px;border-radius:50%;background:var(--ink);margin-top:4px;opacity:0}
+.app.running .dot{opacity:.8}
+.app.bounce .icon{animation:bounce .6s ease-in-out 1}
+@keyframes bounce{0%,100%{transform:translateY(0)}35%{transform:translateY(-22px)}60%{transform:translateY(0)}78%{transform:translateY(-7px)}}
+
+.i-resume{background:linear-gradient(180deg,#ffffff,#e9edf3)}
+.i-projects{background:linear-gradient(180deg,#6fb6ff,#1c7cf2)}
+.i-videos{background:linear-gradient(180deg,#3a3a3c,#111)}
+.i-github{background:#161b22}
+.i-linkedin{background:#0a66c2}
+.i-mail{background:linear-gradient(180deg,#5ac8fa,#0a84ff)}
+.i-pdf{background:linear-gradient(180deg,#ff6b5e,#e0362b)}
+
+/* ---------- Content shared ---------- */
+.page{max-width:820px;margin:0 auto;padding:44px 48px 64px}
+.hero{display:flex;gap:28px;align-items:center;padding-bottom:32px;border-bottom:1px solid var(--line)}
+.avatar{width:112px;height:112px;flex:none;border-radius:50%;background:linear-gradient(135deg,#c9d8ff,#ffd9c2);display:grid;place-items:center;
+  font-size:36px;font-weight:800;color:#33405c;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.hero h1{font-size:40px;font-weight:900;letter-spacing:-.035em;line-height:1}
+.hero .headline{margin-top:10px;font-size:16px;color:var(--ink-2);line-height:1.45}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.badge{font-size:12px;font-weight:600;padding:5px 10px;border-radius:99px;background:var(--paper-2);color:var(--ink-2)}
+.badge.gold{background:#fff4d6;color:#8a5a00}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:8px 14px;border-radius:8px;text-decoration:none;background:var(--paper-2);border:1px solid var(--line)}
+.btn:hover{background:#ececf0}
+.btn.primary{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn.primary:hover{background:#000}
+.sec{padding-top:30px}
+.sec h2{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:14px}
+.item{display:grid;grid-template-columns:1fr auto;gap:2px 16px;padding:10px 0}
+.item + .item{border-top:1px solid var(--line)}
+.item h3{font-size:15px;font-weight:700}
+.item .meta{font-size:13px;color:var(--ink-3);white-space:nowrap;font-variant-numeric:tabular-nums}
+.item .org{grid-column:1/-1;font-size:14px;color:var(--ink-2)}
+.item ul{grid-column:1/-1;margin:6px 0 0 18px;font-size:14px;line-height:1.6;color:var(--ink-2)}
+.featured{border:1px solid var(--line);border-radius:12px;padding:20px 22px;background:linear-gradient(180deg,#fbfcff,#fff)}
+.featured .tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);padding:3px 8px;border-radius:6px;margin-bottom:10px}
+.featured h3{font-size:18px;font-weight:800;letter-spacing:-.01em}
+.featured p{font-size:14px;color:var(--ink-2);line-height:1.6;margin-top:6px}
+.featured ul{margin:10px 0 0 18px;font-size:14px;line-height:1.65;color:var(--ink-2)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.chip{font-size:12px;font-weight:500;padding:4px 9px;border-radius:6px;background:var(--paper-2);color:var(--ink-2)}
+.skills{display:grid;grid-template-columns:140px 1fr;gap:10px 16px;font-size:14px}
+.skills dt{color:var(--ink-3);font-weight:600}
+.skills dd{color:var(--ink-2)}
+.link-more{display:inline-block;margin-top:14px;font-size:13px;font-weight:600;color:var(--accent);cursor:pointer}
+
+/* Projects (Finder-style) */
+.finder{display:flex;height:100%}
+.sidebar{width:190px;flex:none;background:var(--paper-2);border-right:1px solid var(--line);padding:16px 10px;font-size:13px}
+.sidebar h4{font-size:11px;color:var(--ink-3);font-weight:600;padding:0 8px 6px}
+.sidebar button{display:block;width:100%;text-align:left;padding:6px 8px;border-radius:6px}
+.sidebar button.on{background:rgba(0,0,0,.07);font-weight:600}
+.finder-main{flex:1;overflow:auto;padding:24px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.card{text-align:left;border:1px solid var(--line);border-radius:12px;padding:18px;background:#fff;transition:box-shadow .15s,transform .15s}
+.card:hover{box-shadow:0 8px 24px rgba(0,0,0,.08);transform:translateY(-2px)}
+.card .folder{width:44px;height:36px;margin-bottom:12px}
+.card h3{font-size:15px;font-weight:700}
+.card p{font-size:13px;color:var(--ink-3);margin-top:4px}
+.detail .back{font-size:13px;font-weight:600;color:var(--accent);margin-bottom:16px}
+.detail h2{font-size:26px;font-weight:800;letter-spacing:-.02em}
+.detail .sub{font-size:14px;color:var(--ink-3);margin-top:6px}
+.detail p,.detail li{font-size:14px;line-height:1.7;color:var(--ink-2)}
+.detail p{margin-top:16px}
+.detail ul,.detail ol{margin:10px 0 0 20px}
+.detail h4{font-size:13px;font-weight:700;margin-top:22px;color:var(--ink)}
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-top:12px;counter-reset:s}
+.flow div{position:relative;font-size:12px;line-height:1.45;padding:12px 10px 10px;border-radius:10px;background:var(--paper-2);color:var(--ink-2)}
+.flow div::before{counter-increment:s;content:counter(s);display:block;font-size:11px;font-weight:800;color:var(--accent);margin-bottom:4px}
+.flow div.key{background:var(--accent-soft);color:#173a80}
+
+/* Videos */
+.videos{display:grid;gap:22px}
+.video h3{font-size:15px;font-weight:700;margin-bottom:8px}
+.video p{font-size:13px;color:var(--ink-3);margin-top:6px}
+.frame{position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#000}
+.frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+/* Profile cards */
+.profile{max-width:560px;margin:0 auto;padding:40px 32px;text-align:center}
+.profile .avatar{margin:0 auto 16px}
+.profile h2{font-size:24px;font-weight:800;letter-spacing:-.02em}
+.profile .headline{color:var(--ink-2);font-size:14px;margin-top:6px;line-height:1.5}
+.profile .stats{display:flex;justify-content:center;gap:24px;margin:18px 0;font-size:13px;color:var(--ink-3)}
+.profile .stats b{display:block;font-size:18px;color:var(--ink)}
+.repos{text-align:left;margin-top:22px;display:grid;gap:10px}
+.repo{display:block;text-decoration:none;border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.repo:hover{background:var(--paper-2)}
+.repo b{font-size:14px}
+.repo span{display:block;font-size:12px;color:var(--ink-3);margin-top:3px}
+.muted{font-size:13px;color:var(--ink-3)}
+
+/* ---------- Recruiter mode ---------- */
+#recruiter{display:none;position:fixed;inset:0;overflow:auto;background:var(--paper-2)}
+body.recruiter #recruiter{display:block}
+body.recruiter #desktop{display:none}
+.rec-bar{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 20px;background:rgba(245,245,247,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line);font-size:13px}
+.rec-bar b{font-weight:700}
+#recruiter .sheet{max-width:860px;margin:28px auto 60px;background:#fff;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+
+/* ---------- Mobile: iPhone home screen ---------- */
+@media (max-width:767px){
+  :root{--menubar-h:44px}
+  .menubar{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;padding:0 18px;gap:10px}
+  .menubar .mark,.menubar #appName{display:none}
+  .menubar .clock{order:-1;font-weight:700;font-size:15px}
+  .rec-toggle span.txt{display:none}
+  .wallpaper{justify-content:flex-start;padding-top:56px}
+  .hero-name{font-size:clamp(40px,13vw,72px)}
+  .hero-name span{white-space:nowrap}
+  .app{min-width:0}
+  .hero-sub{margin-top:14px;font-size:14px}
+  .dock{bottom:24px;left:16px;right:16px;transform:none;display:grid;grid-template-columns:repeat(4,1fr);gap:22px 8px;padding:18px 12px;border-radius:30px}
+  .dock .sep{display:none}
+  .icon{width:60px;height:60px;border-radius:15px}
+  .app:hover .icon{transform:none}
+  .app .label{position:static;opacity:1;background:none;box-shadow:none;padding:0;margin-top:6px;font-size:11px}
+  .app .dot{display:none}
+  .window,.window.full{top:0;left:0;width:100vw;height:100%;border-radius:0;transform:none;z-index:60}
+  @keyframes winOpen{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+  @keyframes winClose{from{opacity:1;transform:none}to{opacity:0;transform:scale(.9)}}
+  .titlebar{height:auto;padding:calc(env(safe-area-inset-top) + 12px) 12px 10px}
+  .lights{display:none}
+  .mobile-back{display:inline-flex;align-items:center;gap:2px;font-size:16px;font-weight:500;color:var(--accent);z-index:1}
+  .page{padding:24px 16px 48px}
+  .hero{flex-direction:column;align-items:flex-start;gap:16px}
+  .avatar{width:88px;height:88px;font-size:28px}
+  .hero h1{font-size:32px}
+  .item{grid-template-columns:1fr}
+  .item .meta{grid-row:2}
+  .skills{grid-template-columns:1fr;gap:2px}
+  .skills dd{margin-bottom:10px}
+  .finder{display:block}
+  .sidebar{display:none}
+  .finder-main{padding:16px}
+  .rec-bar{padding:10px 16px}
+  #recruiter .sheet{margin:0;border-radius:0}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<div id="desktop">
+  <header class="menubar">
+    <span class="mark" aria-hidden="true">J</span>
+    <b id="appName">Janet Soo Yu Ting</b>
+    <span class="spacer"></span>
+    <button class="rec-toggle" data-action="recruiter" aria-pressed="false" title="Switch to a plain CV view">
+      <span class="txt">Recruiter Mode</span><span class="switch" aria-hidden="true"></span>
+    </button>
+    <span class="clock" id="clock"></span>
+  </header>
+
+  <div class="wallpaper" aria-hidden="true">
+    <h1 class="hero-name"><span>JANET</span><span>SOO YU TING</span></h1>
+    <p class="hero-sub">Software Engineering · Universiti Malaya</p>
+  </div>
+
+  <section class="window" id="win" hidden aria-label="Application window">
+    <div class="titlebar">
+      <div class="lights">
+        <button class="red" data-action="close" aria-label="Close window">×</button>
+        <button class="yellow" data-action="minimize" aria-label="Minimize window">−</button>
+        <button class="green" data-action="zoom" aria-label="Toggle full window">+</button>
+      </div>
+      <button class="mobile-back" data-action="close" aria-label="Back to home screen">‹ Home</button>
+      <div class="title" id="winTitle">Resume</div>
+    </div>
+    <div class="win-body" id="winBody"></div>
+  </section>
+
+  <nav class="dock" id="dock" aria-label="Apps"></nav>
+</div>
+
+<div id="recruiter">
+  <div class="rec-bar">
+    <b>Janet Soo Yu Ting — CV</b>
+    <button class="rec-toggle" data-action="recruiter" aria-pressed="true">
+      <span class="txt">Recruiter Mode</span><span class="switch" aria-hidden="true"></span>
+    </button>
+  </div>
+  <div class="sheet" id="recSheet"></div>
+</div>
+
+<script>
+/* ============ Content: edit everything here ============ */
+const ME = {
+  name: "Janet Soo Yu Ting",
+  initials: "JS",
+  photo: "",                         // TODO: e.g. "photo.jpg"
+  headline: "Yayasan Khazanah Scholar · Undergraduate in Software Engineering @ Universiti Malaya",
+  email: "janetsooyuting.dev@gmail.com",
+  linkedin: "https://www.linkedin.com/in/janet-soo-yu-ting-a8138a3aa",
+  github: "https://github.com/Janetsooyuting-2026",
+  githubUser: "Janetsooyuting-2026",
+  youtube: "https://youtube.com/@jane_jennh",
+  pdf: "Janet_Soo_Yu_Ting_CV.pdf",   // TODO: export a one-page CV WITHOUT phone/IC/address and put it next to this file
+};
+
+const EDUCATION = [
+  { title: "Bachelor of Computer Science (Software Engineering)", org: "Universiti Malaya", meta: "Sep 2026 – Present", points: ["Year 1 · Yayasan Khazanah Watan Scholar"] },
+  { title: "Foundation in Physical Science", org: "Universiti Malaya", meta: "Jul 2025 – May 2026", points: ["CGPA 3.57 / 4.00 · Semester 2 Dean's List (GPA 3.79)", "A+ in Programming II"] },
+  { title: "SPM — 10A (5A+, 5A)", org: "SMK Siburan, Sarawak", meta: "2020 – 2025", points: ["MUET Band 4"] },
+];
+
+const EXPERIENCE = [
+  { title: "Software Developer (Project-based)", org: "Applied Electronics Technology", meta: "2026", points: [
+    "Built a self-service sign-up flow with email OTP verification for a subscription-based electricity monitoring platform.",
+    "Designed UI mockups for subscription modules and normalized relational schemas (ERD, tables, foreign-key constraints)." ] },
+  { title: "Volunteer Intern", org: "PEMIMPIN (Global Education Leaders Malaysia)", meta: "Jun – Jul 2026", points: [
+    "Curated media content, managed Excel datasets and supported event logistics for literacy initiatives." ] },
+  { title: "Community Math Tutor", org: "Trinity Learning Care", meta: "2024 – 2025", points: [
+    "Designed problem-solving exercise modules and gave weekly mentorship to secondary students." ] },
+  { title: "Alumni Outreach Speaker", org: "SMK Siburan", meta: "2026", points: [] },
+];
+
+const AWARDS = [
+  ["Yayasan Khazanah Watan Scholarship", "2025 – Present"],
+  ["Roots and Shoots Malaysia Award (RASMA) — 3 Stars", "2026"],
+  ["Aerorobotech Championship — Obstacle Drone, 5th place (IPTA/IPTS)", "2026"],
+  ["TEGAS Ambassador", "2023 – 2025"],
+  ["Think & Thinker Battlefield (State level) — 2nd Runner-up, GripGenius robotic arm", "2024"],
+  ["Girls Code Mobile App Challenge — State Semi-finalist", "2023"],
+  ["BugCrusher Junior Hackathon — State Finalist, Consolation Prize", "2022"],
+];
+
+const SKILLS = [
+  ["Languages", "C++, Python, SQL, PHP, HTML, CSS"],
+  ["Backend & Data", "CodeIgniter, Microsoft SQL Server, MySQL, relational database design (ERD)"],
+  ["Tools", "Git & GitHub, VS Code, Figma, MIT App Inventor, Thunkable, Arduino"],
+  ["Soft skills", "Problem solving, adaptability, collaboration"],
+];
+
+const PROJECTS = [
+  { id: "otp", name: "Sign-Up & OTP Verification System", short: "Full-stack · Company project · 2026",
+    role: "Full-Stack Web Developer", type: "Applied Electronics Technology",
+    tech: ["HTML", "PHP", "MySQL", "CodeIgniter", "SQL Server", "SMTP"],
+    overview: "Replaced manual account creation with self-service registration for a subscription-based electricity monitoring platform. Input is validated on both client and server, and no account is written to the database until the user verifies a one-time password sent by email. First built with plain PHP and MySQL, then implemented in CodeIgniter on Microsoft SQL Server.",
+    flow: ["User fills in username, email and password", "Client-side checks, then the server re-validates everything", "Server checks username and email are not taken", "6-digit OTP emailed via SMTP. Nothing saved yet", "Code field appears in place; fields lock; 60s resend cooldown", "Account written to the database only after OTP succeeds", "Success message, redirect to login"],
+    keyStep: 5,
+    points: ["OTP expires after 10 minutes", "Deferred account creation means abandoned sign-ups never leave orphaned records", "Clear error messages for taken usernames, registered emails, mismatched passwords, wrong or expired codes"] },
+  { id: "db", name: "Subscription Database Design", short: "Database · Company project · 2026",
+    role: "Software & Database Developer", type: "Applied Electronics Technology",
+    tech: ["SQL Server", "T-SQL", "ERD", "UI mockups"],
+    overview: "Designed UI mockups for subscription management modules and the normalized relational schema behind them: ERD, tables and foreign-key constraints, focused on data integrity and query performance for tracking user subscriptions." },
+  { id: "grip", name: "GripGenius — 6-DOF Robotic Arm", short: "Hardware + mobile app · 48-hour build · 2024",
+    role: "Hardware & App Developer", type: "Think & Thinker Battlefield 2024 · Final · 2nd Runner-up",
+    tech: ["Arduino", "3D printing", "Servo motors", "Bluetooth HC-05", "MIT App Inventor"],
+    overview: "A six-degree-of-freedom robotic arm controlled from a custom Android app over Bluetooth, built in 48 hours.",
+    points: ["Manual mode: drive each joint (grip, wrist pitch, wrist roll, elbow, arm, base) in real time", "Auto mode: set joint angles with sliders, save them as a sequence and replay it with one tap", "In-app guide for pairing and both control modes"] },
+  { id: "smars", name: "SMARS Robot", short: "Hardware + mobile app · 2024",
+    role: "Hardware & App Developer", type: "Think & Thinker Battlefield 2024 · Semi-final round",
+    tech: ["Arduino", "3D printing", "Bluetooth HC-05", "MIT App Inventor"],
+    overview: "A 3D-printed modular robot controlled from a custom Android app.",
+    points: ["Joystick and button modes with speed control and a slider for the shovel", "Obstacle-avoiding mode using sensors for autonomous navigation", "In-app Bluetooth pairing flow"],
+    videos: [["ecKS0g5CyP0", "Preliminary round"], ["OSq2w1owauU", "Semi-final: robot modifications"]] },
+  { id: "buddy", name: "BUDDY — Health & Wellness App", short: "UI/UX + mobile prototype · 2023",
+    role: "UI/UX Designer & Developer", type: "Girls Code Mobile App Challenge · Semi-final",
+    tech: ["Thunkable", "Figma", "SQL"],
+    overview: "A mobile app prototype for physical and mental well-being.",
+    points: ["Mood logging, guided meditation and self-assessments for anxiety, peer pressure and loneliness", "Calculators for BMI, water intake, body fat and daily calories", "Meal plans with recipes and nutrition breakdowns", "Emergency info hub with blood group, allergies and quick-dial contacts"] },
+];
+
+const VIDEOS = [
+  { id: "v8fUFkrayIk", title: "Visume — video introduction", note: "Recorded during foundation year." },
+  { id: "ecKS0g5CyP0", title: "SMARS Robot — preliminary round", note: "Team Swarm Patrol · Think & Thinker Battlefield 2024 · 3 min" },
+  { id: "OSq2w1owauU", title: "SMARS Robot — semi-final modifications", note: "Team Swarm Patrol · Think & Thinker Battlefield 2024 · 7 min" },
+];
+
+/* ============ Icons ============ */
+const ICONS = {
+  resume: `<svg viewBox="0 0 24 24" fill="none"><rect x="5" y="3" width="14" height="18" rx="2" fill="#fff" stroke="#c7ccd6"/><circle cx="12" cy="8.5" r="2.2" fill="#0a5cff"/><rect x="8" y="12.5" width="8" height="1.4" rx=".7" fill="#1d1d1f"/><rect x="8" y="15.2" width="8" height="1" rx=".5" fill="#b0b6c2"/><rect x="8" y="17.4" width="5.5" height="1" rx=".5" fill="#b0b6c2"/></svg>`,
+  projects: `<svg viewBox="0 0 24 24"><path d="M3 7.5A1.5 1.5 0 0 1 4.5 6h4.4l1.8 2H19.5A1.5 1.5 0 0 1 21 9.5v8A1.5 1.5 0 0 1 19.5 19h-15A1.5 1.5 0 0 1 3 17.5z" fill="#fff" opacity=".95"/><path d="M3 10h18" stroke="#1c7cf2" stroke-width="1.2" opacity=".5"/></svg>`,
+  videos: `<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="#fff" stroke-width="1.6"/><path d="M10 8.5v7l6-3.5z" fill="#fff"/></svg>`,
+  github: `<svg viewBox="0 0 16 16"><path fill="#fff" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>`,
+  linkedin: `<svg viewBox="0 0 24 24"><text x="12" y="17" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="15" fill="#fff">in</text></svg>`,
+  mail: `<svg viewBox="0 0 24 24" fill="none"><rect x="3" y="6" width="18" height="12" rx="2" fill="#fff"/><path d="M3.5 7l8.5 6 8.5-6" stroke="#0a84ff" stroke-width="1.5"/></svg>`,
+  pdf: `<svg viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6z" fill="#fff"/><path d="M14 3v4h4" fill="#ffd2cd"/><text x="12" y="17" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="5.2" fill="#e0362b">PDF</text></svg>`,
+};
+const FOLDER = `<svg class="folder" viewBox="0 0 44 36"><path d="M2 6a3 3 0 0 1 3-3h10l3 4h21a3 3 0 0 1 3 3v21a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3z" fill="#5aa9ff"/><path d="M2 12h40v19a3 3 0 0 1-3 3H5a3 3 0 0 1-3-3z" fill="#7cbcff"/></svg>`;
+
+/* ============ Apps ============ */
+// kind: "window" opens in the single window; "link" leaves the site
+const APPS = [
+  { id: "resume",   label: "Resume",   kind: "window", render: renderResume },
+  { id: "projects", label: "Projects", kind: "window", render: renderProjects },
+  { id: "videos",   label: "Videos",   kind: "window", render: renderVideos },
+  "sep",
+  { id: "github",   label: "GitHub",   kind: "window", render: renderGitHub },
+  { id: "linkedin", label: "LinkedIn", kind: "window", render: renderLinkedIn },
+  { id: "mail",     label: "Email",    kind: "link", href: () => `mailto:${ME.email}` },
+  { id: "pdf",      label: "CV (PDF)", kind: "link", href: () => ME.pdf, download: true },
+];
+
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const avatar = () => `<div class="avatar">${ME.photo ? `<img src="${esc(ME.photo)}" alt="${esc(ME.name)}">` : ME.initials}</div>`;
+const items = list => list.map(x => `
+  <div class="item"><h3>${esc(x.title)}</h3><span class="meta">${esc(x.meta)}</span>
+    <span class="org">${esc(x.org)}</span>
+    ${x.points.length ? `<ul>${x.points.map(p => `<li>${esc(p)}</li>`).join("")}</ul>` : ""}
+  </div>`).join("");
+
+function renderResume({ forRecruiter = false } = {}) {
+  const p = PROJECTS[0];
+  return `<article class="page">
+    <header class="hero">
+      ${avatar()}
+      <div>
+        <h1>${esc(ME.name)}</h1>
+        <p class="headline">${esc(ME.headline)}</p>
+        <div class="badges">
+          <span class="badge gold">Yayasan Khazanah Watan Scholar</span>
+          <span class="badge">Dean's List</span>
+          <span class="badge">SE · Year 1</span>
+        </div>
+        <div class="actions">
+          <a class="btn primary" href="${esc(ME.pdf)}" download>Download PDF</a>
+          <a class="btn" href="mailto:${esc(ME.email)}">Email</a>
+          <a class="btn" href="${esc(ME.linkedin)}" target="_blank" rel="noopener">LinkedIn ↗</a>
+          <a class="btn" href="${esc(ME.github)}" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
+      </div>
+    </header>
+
+    <section class="sec">
+      <h2>Featured project</h2>
+      <div class="featured">
+        <span class="tag">Company project · 2026</span>
+        <h3>${esc(p.name)}</h3>
+        <p>${esc(p.overview)}</p>
+        <div class="chips">${p.tech.map(t => `<span class="chip">${esc(t)}</span>`).join("")}</div>
+        ${forRecruiter ? "" : `<a class="link-more" data-open-project="otp">See how it works →</a>`}
+      </div>
+    </section>
+
+    <section class="sec"><h2>Education</h2>${items(EDUCATION)}</section>
+    <section class="sec"><h2>Experience & community</h2>${items(EXPERIENCE)}</section>
+    <section class="sec"><h2>Honours & awards</h2>
+      ${AWARDS.map(([t, m]) => `<div class="item"><h3 style="font-weight:600">${esc(t)}</h3><span class="meta">${esc(m)}</span></div>`).join("")}
+    </section>
+    <section class="sec"><h2>Skills</h2>
+      <dl class="skills">${SKILLS.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl>
+    </section>
+  </article>`;
+}
+
+let projectView = null;
+function renderProjects() {
+  if (projectView) return renderProjectDetail(PROJECTS.find(p => p.id === projectView));
+  return `<div class="finder">
+    <aside class="sidebar"><h4>Favourites</h4>
+      <button class="on">All projects</button>
+      ${PROJECTS.map(p => `<button data-open-project="${p.id}">${esc(p.name.split(" — ")[0])}</button>`).join("")}
+    </aside>
+    <div class="finder-main"><div class="grid">
+      ${PROJECTS.map(p => `<button class="card" data-open-project="${p.id}">${FOLDER}<h3>${esc(p.name)}</h3><p>${esc(p.short)}</p></button>`).join("")}
+    </div></div>
+  </div>`;
+}
+function renderProjectDetail(p) {
+  return `<article class="page detail">
+    <button class="back" data-project-back>‹ All projects</button>
+    <h2>${esc(p.name)}</h2>
+    <p class="sub">${esc(p.role)} · ${esc(p.type)}</p>
+    <div class="chips">${p.tech.map(t => `<span class="chip">${esc(t)}</span>`).join("")}</div>
+    <p>${esc(p.overview)}</p>
+    ${p.flow ? `<h4>How it works</h4><div class="flow">${p.flow.map((s, i) => `<div class="${i === p.keyStep ? "key" : ""}">${esc(s)}</div>`).join("")}</div>` : ""}
+    ${p.points ? `<h4>Highlights</h4><ul>${p.points.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}
+    ${p.videos ? p.videos.map(([id, t]) => `<h4>${esc(t)}</h4><div class="frame" style="margin-top:10px">${yt(id, t)}</div>`).join("") : ""}
+  </article>`;
+}
+
+const yt = (id, title) => `<iframe src="https://www.youtube-nocookie.com/embed/${id}" title="${esc(title)}" loading="lazy" allow="encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+function renderVideos() {
+  return `<div class="page videos">${VIDEOS.map(v => `
+    <div class="video"><h3>${esc(v.title)}</h3><div class="frame">${yt(v.id, v.title)}</div>${v.note ? `<p>${esc(v.note)}</p>` : ""}</div>`).join("")}
+  </div>`;
+}
+
+function renderLinkedIn() {
+  return `<div class="profile">
+    ${avatar()}
+    <h2>${esc(ME.name)}</h2>
+    <p class="headline">${esc(ME.headline)}</p>
+    <p class="muted" style="margin-top:6px">Kuala Lumpur, Malaysia</p>
+    <div class="stats"><div><b>Universiti Malaya</b>Education</div><div><b>Yayasan Khazanah</b>Scholarship</div></div>
+    <a class="btn primary" href="${esc(ME.linkedin)}" target="_blank" rel="noopener">Connect on LinkedIn ↗</a>
+  </div>`;
+}
+
+let ghCache = null;
+function renderGitHub() {
+  if (!ghCache) { loadGitHub(); return `<div class="profile"><p class="muted">Loading GitHub…</p></div>`; }
+  if (ghCache.error) return `<div class="profile">${avatar()}<h2>@${esc(ME.githubUser)}</h2>
+      <p class="muted" style="margin:10px 0 18px">Couldn't reach GitHub right now.</p>
+      <a class="btn primary" href="${esc(ME.github)}" target="_blank" rel="noopener">Open GitHub ↗</a></div>`;
+  const { user, repos } = ghCache;
+  return `<div class="profile">
+    <div class="avatar"><img src="${esc(user.avatar_url)}" alt=""></div>
+    <h2>${esc(user.name || user.login)}</h2>
+    <p class="headline">@${esc(user.login)}${user.bio ? " · " + esc(user.bio) : ""}</p>
+    <div class="stats"><div><b>${user.public_repos}</b>Repositories</div><div><b>${user.followers}</b>Followers</div></div>
+    <a class="btn primary" href="${esc(user.html_url)}" target="_blank" rel="noopener">View on GitHub ↗</a>
+    <div class="repos">${repos.length ? repos.map(r => `
+      <a class="repo" href="${esc(r.html_url)}" target="_blank" rel="noopener"><b>${esc(r.name)}</b>
+        <span>${esc(r.description || "No description yet")}${r.language ? " · " + esc(r.language) : ""} · ★ ${r.stargazers_count}</span></a>`).join("")
+      : `<p class="muted" style="text-align:center">Public repositories will show up here.</p>`}</div>
+  </div>`;
+}
+async function loadGitHub() {
+  try {
+    const base = `https://api.github.com/users/${ME.githubUser}`;
+    const [u, r] = await Promise.all([fetch(base), fetch(`${base}/repos?sort=updated&per_page=6`)]);
+    if (!u.ok || !r.ok) throw new Error();
+    ghCache = { user: await u.json(), repos: (await r.json()).filter(x => !x.fork) };
+  } catch { ghCache = { error: true }; }
+  if (current === "github") show("github", { swap: false });
+}
+
+/* ============ Window manager (one window only) ============ */
+const $ = s => document.querySelector(s);
+const win = $("#win"), body = $("#winBody"), dock = $("#dock");
+let current = null;
+
+dock.innerHTML = APPS.map(a => a === "sep" ? `<span class="sep"></span>` :
+  a.kind === "link"
+    ? `<a class="app" data-app="${a.id}" href="${esc(a.href())}" ${a.download ? "download" : ""} aria-label="${esc(a.label)}"><span class="icon i-${a.id}">${ICONS[a.id]}</span><span class="label">${esc(a.label)}</span><span class="dot"></span></a>`
+    : `<button class="app" data-app="${a.id}" aria-label="Open ${esc(a.label)}"><span class="icon i-${a.id}">${ICONS[a.id]}</span><span class="label">${esc(a.label)}</span><span class="dot"></span></button>`
+).join("");
+
+const appById = id => APPS.find(a => a.id === id);
+const iconEl = id => dock.querySelector(`[data-app="${id}"]`);
+
+function originVars(id) {
+  // Point the open/close animation at the dock icon
+  const r = iconEl(id).getBoundingClientRect();
+  const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  const wr = win.getBoundingClientRect();
+  const wcx = wr.width ? wr.left + wr.width / 2 : innerWidth / 2;
+  const wcy = wr.height ? wr.top + wr.height / 2 : innerHeight / 2;
+  win.style.setProperty("--dx", `calc(-50% + ${cx - wcx}px)`);
+  win.style.setProperty("--dy", `${cy - wcy}px`);
+}
+
+function show(id, { swap = true } = {}) {
+  const app = appById(id);
+  current = id;
+  $("#winTitle").textContent = app.label;
+  body.innerHTML = app.render();
+  if (swap) { body.classList.remove("swap"); void body.offsetWidth; body.classList.add("swap"); }
+  dock.querySelectorAll(".app").forEach(el => el.classList.toggle("running", el.dataset.app === id));
+}
+
+function open(id) {
+  if (!win.hidden) {
+    if (id !== current) { if (id === "projects") projectView = null; show(id); body.scrollTop = 0; }
+    return;
+  }
+  projectView = null;
+  win.hidden = false;
+  show(id, { swap: false });
+  originVars(id);
+  win.classList.remove("closing");
+  win.classList.add("opening");
+  win.addEventListener("animationend", () => win.classList.remove("opening"), { once: true });
+}
+
+function closeWin() {
+  if (win.hidden) return;
+  originVars(current);
+  win.classList.add("closing");
+  win.addEventListener("animationend", () => {
+    win.hidden = true; win.classList.remove("closing", "full");
+    dock.querySelectorAll(".app").forEach(el => el.classList.remove("running"));
+    current = null;
+  }, { once: true });
+}
+
+/* ============ Events ============ */
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-app],[data-action],[data-open-project],[data-project-back]");
+  if (!t) return;
+  if (t.dataset.app && appById(t.dataset.app).kind === "window") open(t.dataset.app);
+  const a = t.dataset.action;
+  if (a === "close" || a === "minimize") closeWin();
+  if (a === "zoom") win.classList.toggle("full");
+  if (a === "recruiter") setRecruiter(!document.body.classList.contains("recruiter"));
+  if (t.dataset.openProject) {
+    if (win.hidden) open("projects");
+    projectView = t.dataset.openProject;
+    show("projects"); body.scrollTop = 0;
+  }
+  if (t.hasAttribute("data-project-back")) { projectView = null; show("projects"); }
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !win.hidden) closeWin(); });
+
+/* ============ Recruiter mode ============ */
+function setRecruiter(on) {
+  document.body.classList.toggle("recruiter", on);
+  document.querySelectorAll(".rec-toggle").forEach(b => b.setAttribute("aria-pressed", on));
+  if (on) $("#recSheet").innerHTML = renderResume({ forRecruiter: true });
+  try { localStorage.setItem("recruiter", on ? "1" : "0"); } catch {}
+  const url = new URL(location.href);
+  on ? url.searchParams.set("mode", "recruiter") : url.searchParams.delete("mode");
+  history.replaceState(null, "", url);
+}
+
+/* ============ Clock ============ */
+function tick() {
+  const d = new Date();
+  const small = innerWidth < 768;
+  $("#clock").textContent = small
+    ? d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })
+    : d.toLocaleDateString([], { weekday: "short", day: "numeric", month: "short" }) + "  " + d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+}
+tick(); setInterval(tick, 15000);
+
+/* ============ Intro: name → dock bounce → window ============ */
+(function intro() {
+  let stored = false, seen = false;
+  try { stored = localStorage.getItem("recruiter") === "1"; seen = sessionStorage.getItem("seen") === "1"; sessionStorage.setItem("seen", "1"); } catch {}
+  if (new URLSearchParams(location.search).get("mode") === "recruiter" || stored) setRecruiter(true);
+
+  requestAnimationFrame(() => document.body.classList.add("intro-in"));
+  const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (seen || reduced) { open("resume"); return; }
+
+  const timers = [
+    setTimeout(() => iconEl("resume").classList.add("bounce"), 600),
+    setTimeout(() => { iconEl("resume").classList.remove("bounce"); open("resume"); }, 1000),
+  ];
+  const skip = () => { timers.forEach(clearTimeout); iconEl("resume").classList.remove("bounce"); if (win.hidden) open("resume"); };
+  addEventListener("pointerdown", skip, { once: true });
+  addEventListener("keydown", skip, { once: true });
+})();
+</script>
+</body>
+</html>

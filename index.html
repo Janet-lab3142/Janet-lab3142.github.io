@@ -1,0 +1,1451 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Janet Soo Yu Ting</title>
+<meta name="description" content="Janet Soo Yu Ting — Software Engineering undergraduate at Universiti Malaya, Yayasan Khazanah Watan Scholar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --mb-h:28px;
+  --ui:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --serif:"Instrument Serif",Georgia,serif;
+  --hand:"Caveat",cursive;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --text:#1d1d1f; --text2:#58585d; --text3:#8e8e93;
+  --sep:rgba(0,0,0,.1);
+  --accent:#0a63ff;
+  --spring:cubic-bezier(.2,.9,.25,1.05);
+  --noise:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--ui);color:var(--text);background:#e4e1db;overflow:hidden;-webkit-font-smoothing:antialiased;font-feature-settings:"cv11","ss01";letter-spacing:-.006em}
+button{font:inherit;color:inherit;background:none;border:0;cursor:default}
+a{color:inherit}
+svg{display:block}
+
+/* ================= Desktop & wallpaper ================= */
+/* Glass works only when there is something to see through it, so the wallpaper is a misty lake scene, not a flat colour */
+#desktop{position:fixed;inset:0;overflow:hidden;background:#cfd8da}
+#wall{position:absolute;inset:0;width:100%;height:100%;display:block}
+img#wall{object-fit:cover}
+#desktop::after{content:"";position:absolute;inset:0;pointer-events:none;background-image:var(--noise);opacity:.16;mix-blend-mode:multiply}
+
+/* one recipe for every glass surface: blur + saturation, a thin bright rim, a soft drop shadow */
+:root{
+  --glass-blur:blur(36px) saturate(1.9);
+  --glass-rim:inset 0 1px 0 rgba(255,255,255,.75),inset 0 0 0 1px rgba(255,255,255,.32);
+  --glass-edge:0 0 0 .5px rgba(20,30,30,.14);
+}
+
+/* warm taupe "solid" wallpaper: reads as one colour, but soft light patches keep the glass from going flat */
+.wall-solid{background:
+  radial-gradient(55% 45% at 50% 28%,rgba(255,243,232,.55),transparent 70%),
+  radial-gradient(40% 35% at 50% 96%,rgba(255,230,210,.4),transparent 70%),
+  radial-gradient(40% 50% at 6% 92%,rgba(110,84,68,.35),transparent 70%),
+  radial-gradient(40% 50% at 95% 10%,rgba(110,84,68,.28),transparent 70%),
+  linear-gradient(180deg,#b5a395 0%,#a08b7c 60%,#957f70 100%)}
+.nameplate{position:absolute;left:50%;top:calc(var(--mb-h) + 9vh);transform:translateX(-50%);text-align:center;pointer-events:none;width:100%;padding:0 16px}
+.nameplate .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(28,40,40,.6)}
+.nameplate h1{font-family:var(--serif);font-weight:400;font-size:clamp(56px,7.4vw,124px);line-height:.95;letter-spacing:-.02em;color:#241b15;margin-top:14px;text-shadow:0 1px 30px rgba(255,240,228,.35)}
+
+/* ---------- Janet, leaning on the dock ---------- */
+/* --dock-top: height of the dock's top edge; the image's cut-off bottom sits just behind it so her hands rest on the dock */
+:root{--j-size:min(52vh,520px,calc(100vh - 360px));--dock-top:72px}
+.janet-wrap{position:absolute;left:50%;bottom:calc(var(--dock-top) - var(--j-size) * .04);width:var(--j-size);height:var(--j-size);z-index:12;
+  transform:translateX(-50%) translateY(105%);transition:transform .9s var(--spring) .35s}
+body.in .janet-wrap{transform:translateX(-50%)}
+body.in.win-open .janet-wrap{transform:translateX(-50%) translateY(64%);transition-delay:0s}
+.janet{display:block;width:100%;height:100%;padding:0;cursor:pointer;transform-origin:50% 100%;animation:breathe 4.6s ease-in-out infinite}
+.janet.hop{animation:hop .45s var(--spring)}
+.janet:focus-visible{outline:2px solid rgba(255,255,255,.9);outline-offset:-20px;border-radius:30%}
+.j-sprite{display:block;width:100%;height:100%;background:url(assets/character/janet-turn.webp) 0 0/900% 100% no-repeat;
+  background-position-x:calc(var(--f,4) * 12.5%);transform:rotate(var(--tilt,0deg)) translateY(var(--lift,0px));transform-origin:50% 90%;
+  transition:transform .45s ease-out;filter:drop-shadow(0 14px 26px rgba(50,30,18,.28))}
+@keyframes breathe{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes hop{0%{transform:translateY(0)}35%{transform:translateY(-14px)}70%{transform:translateY(2px)}100%{transform:translateY(0)}}
+
+/* RPG-style speech bubble */
+.bubble{position:absolute;right:66%;bottom:74%;width:max-content;min-width:200px;max-width:300px;padding:12px 18px 20px;border-radius:18px;
+  background:rgba(255,255,255,.86);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+  box-shadow:var(--glass-rim),var(--glass-edge),0 14px 34px rgba(50,30,18,.22);color:#231b16;font-size:14.5px;line-height:1.5;
+  opacity:0;transform:translateY(8px) scale(.95);transform-origin:100% 100%;transition:opacity .2s,transform .3s var(--spring);pointer-events:none;cursor:pointer}
+.bubble.show{opacity:1;transform:none;pointer-events:auto}
+.bubble::after{content:"";position:absolute;right:22px;bottom:-7px;width:16px;height:16px;transform:rotate(45deg);border-radius:0 0 4px 0;background:rgba(255,255,255,.86)}
+.bubble .who{font-size:10.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#b06a3b;margin-bottom:3px}
+.bubble .more{position:absolute;right:13px;bottom:6px;font-style:normal;font-size:9px;color:#b06a3b;opacity:0}
+.bubble.done .more{opacity:1;animation:nudge 1s ease-in-out infinite}
+@keyframes nudge{50%{transform:translateY(2px)}}
+body.win-open .bubble{opacity:0;pointer-events:none}
+.nameplate h1 em{font-style:italic}
+/* a soft dark glow behind the name, so it reads on any part of the photo without a visible box */
+body.wall-dark .nameplate::before{content:"";position:absolute;left:50%;top:50%;width:min(980px,96vw);height:135%;transform:translate(-50%,-50%);z-index:-1;
+  background:radial-gradient(closest-side,rgba(5,18,32,.5),rgba(5,18,32,.28) 55%,transparent);filter:blur(10px)}
+body.wall-dark .nameplate h1{color:#fff;text-shadow:0 1px 2px rgba(0,10,25,.45),0 4px 18px rgba(0,10,25,.45),0 10px 60px rgba(0,10,25,.4)}
+body.wall-dark .nameplate .eyebrow{color:rgba(255,255,255,.9);text-shadow:0 1px 8px rgba(0,10,25,.6)}
+body.wall-dark .glass > .inner{background:rgba(255,255,255,.42)}
+body.wall-dark .nameplate .sub{color:#fff;font-weight:500;text-shadow:0 1px 2px rgba(0,10,25,.6),0 2px 14px rgba(0,10,25,.55)}
+.nameplate .sub{margin-top:22px;font-size:15px;color:rgba(23,33,31,.75);line-height:1.6}
+.intro-item{opacity:0;transform:translateY(14px);transition:opacity .7s ease,transform .9s var(--spring)}
+body.in .intro-item{opacity:1;transform:none}
+
+/* ---------- Desktop widgets ---------- */
+.widget{position:absolute;z-index:5;touch-action:none;cursor:grab;user-select:none}
+.widget:active{cursor:grabbing}
+.widget > .inner{transform:rotate(var(--r,0deg));transition:transform .25s var(--spring),box-shadow .25s}
+.widget:hover > .inner{transform:rotate(var(--r,0deg)) scale(1.02)}
+.polaroid > .inner{width:188px;padding:10px 10px 12px;background:#fbfaf6;border-radius:3px;
+  box-shadow:0 1px 1px rgba(0,0,0,.08),0 6px 14px rgba(40,30,20,.12),0 22px 40px rgba(40,30,20,.12)}
+.polaroid .ph,.polaroid img{aspect-ratio:4/5;width:100%;border-radius:1px}
+.polaroid .cap{font-family:var(--hand);font-size:21px;line-height:1.1;color:#2b2a27;text-align:center;margin-top:8px}
+.polaroid .inner::before{content:"";position:absolute;top:-11px;left:50%;width:74px;height:22px;transform:translateX(-50%) rotate(-3deg);
+  background:rgba(255,250,235,.62);box-shadow:0 1px 2px rgba(0,0,0,.08);backdrop-filter:blur(2px)}
+.polaroid .inner{position:relative}
+.sticky > .inner{width:196px;min-height:184px;padding:20px 20px 18px;background:linear-gradient(180deg,#fff4a8,#ffe97a);
+  border-radius:2px 2px 18px 2px;font-family:var(--hand);font-size:25px;line-height:1.12;color:#3a3220;
+  box-shadow:0 1px 1px rgba(0,0,0,.06),0 10px 18px rgba(80,60,0,.14),0 26px 36px -18px rgba(80,60,0,.3)}
+.sticky small{display:block;margin-top:12px;font-size:18px;color:#7a6a3a}
+.glass > .inner{width:252px;padding:16px 18px 18px;border-radius:24px;background:rgba(255,255,255,.26);
+  backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+  box-shadow:var(--glass-rim),var(--glass-edge),0 18px 40px rgba(20,35,35,.16)}
+.glass .k{font-family:var(--mono);font-size:10px;letter-spacing:.18em;color:rgba(23,33,31,.55);text-transform:uppercase}
+/* clock widget */
+.w-clock .inner{padding:18px 20px 16px}
+.w-clock .t{font-size:54px;font-weight:300;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums;color:#17211f}
+.w-clock .t small{font-size:16px;font-weight:500;letter-spacing:0;margin-left:6px;color:rgba(23,33,31,.6)}
+.w-clock .d{margin-top:8px;font-size:13px;font-weight:600;color:rgba(23,33,31,.75)}
+.w-clock .d span{font-weight:400;color:rgba(23,33,31,.55)}
+/* calendar widget */
+.cal .m{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#e0352b}
+.cal .g{display:grid;grid-template-columns:repeat(7,1fr);gap:3px 0;margin-top:8px;text-align:center;font-size:11px;font-variant-numeric:tabular-nums;color:#17211f}
+.cal .g b{font-size:9.5px;font-weight:600;color:rgba(23,33,31,.5)}
+.cal .g span{line-height:22px;width:22px;margin:0 auto;border-radius:50%}
+.cal .g span.today{background:#e0352b;color:#fff;font-weight:700}
+.cal .g span.we{color:rgba(23,33,31,.5)}
+.glass ul{list-style:none;margin-top:10px;display:grid;gap:8px;font-size:13px;line-height:1.35}
+.glass li{display:flex;gap:9px}
+.glass li i{flex:none;width:8px;height:8px;border-radius:50%;margin-top:5px;background:#34c759}
+.glass li i.b{background:#0a84ff}.glass li i.o{background:#ff9f0a}
+
+/* photo placeholders: replace with real photos via PHOTOS in the script */
+.ph{display:grid;place-items:center;text-align:center;padding:10px;font-family:var(--mono);font-size:10px;line-height:1.5;letter-spacing:.04em;color:#8a877f;
+  background:repeating-linear-gradient(135deg,#ecebe6 0 9px,#f4f3ef 9px 18px)}
+img.photo{display:block;width:100%;height:100%;object-fit:cover}
+
+/* ================= Menu bar ================= */
+.menubar{position:absolute;z-index:70;top:0;left:0;right:0;height:var(--mb-h);display:flex;align-items:center;justify-content:space-between;padding:0 10px;font-size:13px;
+  background:rgba(255,255,255,.3);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);box-shadow:0 .5px 0 rgba(255,255,255,.35)}
+.mb-left,.mb-right{display:flex;align-items:center;height:100%}
+.mb-item{height:22px;padding:0 9px;border-radius:5px;display:flex;align-items:center;gap:7px;white-space:nowrap}
+.mb-item.open,.mb-item:hover{background:rgba(0,0,0,.08)}
+.mb-mark{font-family:var(--serif);font-style:italic;font-size:18px;line-height:1;padding:0 10px}
+.mb-app{font-weight:700}
+.mb-right .mb-item{gap:8px}
+.mb-right svg{width:16px;height:16px}
+.clock{font-variant-numeric:tabular-nums}
+/* Recruiter Mode: the one coloured control in the menu bar, so recruiters spot it straight away */
+.mb-item.rec,.mb-item.rec:hover{position:relative;height:24px;padding:0 5px 0 10px;border-radius:99px;gap:7px;font-size:12px;font-weight:700;letter-spacing:.01em;color:#fff;cursor:pointer;
+  background:linear-gradient(180deg,#4a8dff,#0a5cf0);box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 0 0 .5px rgba(5,50,160,.5),0 2px 8px rgba(10,80,220,.35)}
+.mb-item.rec:hover{filter:brightness(1.1)}
+.rec .r-ico{width:13px;height:13px}
+.rec .txt-m{display:none}
+.rec .switch{background:rgba(255,255,255,.32)}
+.rec.pulse::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;animation:recPulse 1.3s ease-out 4}
+@keyframes recPulse{0%{box-shadow:0 0 0 0 rgba(10,92,240,.6)}100%{box-shadow:0 0 0 14px rgba(10,92,240,0)}}
+.rec-hint{position:absolute;z-index:95;top:calc(var(--mb-h) + 10px);display:flex;align-items:center;gap:10px;padding:10px 10px 10px 14px;border-radius:14px;
+  font-size:13px;line-height:1.35;color:#fff;background:rgba(22,18,15,.86);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  box-shadow:0 10px 30px rgba(0,0,0,.25);opacity:0;transform:translateY(-6px);transition:opacity .3s,transform .4s var(--spring);pointer-events:none}
+.rec-hint.show{opacity:1;transform:none;pointer-events:auto;animation:hintBob 2.4s ease-in-out .6s infinite}
+.rec-hint::before{content:"";position:absolute;top:-6px;right:var(--arrow,40px);width:12px;height:12px;transform:rotate(45deg);border-radius:3px 0 0 0;background:rgba(22,18,15,.86)}
+.rec-hint b{color:#8fb8ff}
+.rec-hint button{width:22px;height:22px;flex:none;border-radius:50%;color:rgba(255,255,255,.7);font-size:15px;line-height:1;cursor:pointer}
+.rec-hint button:hover{background:rgba(255,255,255,.12);color:#fff}
+@keyframes hintBob{50%{transform:translateY(3px)}}
+.switch{width:26px;height:15px;border-radius:99px;background:rgba(0,0,0,.22);position:relative;transition:background .2s}
+.switch::after{content:"";position:absolute;top:2px;left:2px;width:11px;height:11px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.3);transition:transform .22s var(--spring)}
+body.recruiter .switch{background:#34c759}
+body.recruiter .switch::after{transform:translateX(11px)}
+.menu{position:absolute;z-index:90;min-width:230px;padding:5px;border-radius:12px;font-size:13px;display:none;
+  background:rgba(255,255,255,.5);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+  box-shadow:var(--glass-rim),var(--glass-edge),0 14px 40px rgba(20,35,35,.22)}
+.menu button,.menu a{border-radius:7px!important}
+.menu.show{display:block}
+.menu button,.menu a{display:flex;justify-content:space-between;gap:24px;width:100%;text-align:left;padding:4px 10px;border-radius:5px;text-decoration:none}
+.menu button:hover,.menu a:hover{background:var(--accent);color:#fff}
+.menu button:hover kbd,.menu a:hover kbd{color:rgba(255,255,255,.8)}
+.menu kbd{font:inherit;color:var(--text3)}
+.menu hr{border:0;height:1px;background:var(--sep);margin:5px 10px}
+
+/* ================= Window ================= */
+/* the blur lives on the window only: a blurred child inside a blurred parent would only see the parent */
+.window{position:absolute;z-index:20;display:flex;border-radius:22px;overflow:hidden;
+  background:rgba(250,252,252,.38);backdrop-filter:blur(44px) saturate(1.9);-webkit-backdrop-filter:blur(44px) saturate(1.9);
+  box-shadow:var(--glass-edge),0 34px 90px rgba(15,30,30,.32),0 10px 26px rgba(15,30,30,.14);
+  transition:left .38s var(--spring),top .38s var(--spring),width .38s var(--spring),height .38s var(--spring),border-radius .3s}
+.window::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:3;box-shadow:var(--glass-rim)}
+.window.dragging{transition:none}
+.window[hidden]{display:none}
+.window.full{border-radius:0}
+.w-side{flex:none;width:224px;display:flex;flex-direction:column;background:rgba(255,255,255,.14);border-right:1px solid rgba(255,255,255,.4)}
+.w-side .side-top{height:56px;flex:none;display:flex;align-items:center;padding-left:22px}
+.side-scroll{flex:1;overflow:auto;padding:0 12px 14px}
+.w-main{flex:1;min-width:0;display:flex;flex-direction:column;background:rgba(255,255,255,.52)}
+.w-bar{height:56px;flex:none;display:flex;align-items:center;gap:8px;padding:0 14px 0 18px;background:rgba(255,255,255,.22);border-bottom:1px solid rgba(255,255,255,.45);box-shadow:0 .5px 0 rgba(20,30,30,.06)}
+.pill{display:flex;align-items:center;height:34px;padding:0 3px;border-radius:99px;flex:none;
+  background:rgba(255,255,255,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 0 0 .5px rgba(20,30,30,.1),0 2px 6px rgba(20,30,30,.08)}
+.pill .tbtn{border-radius:99px;width:32px;height:28px}
+.pill i{width:1px;height:16px;background:rgba(0,0,0,.12)}
+.w-side + .w-main .w-bar{padding-left:14px}
+.w-title{min-width:0;margin-right:auto;padding-left:6px;line-height:1.2}
+.w-title b{display:block;font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.w-title small{font-size:11px;color:var(--text3)}
+.w-body{flex:1;min-height:0;overflow:auto;position:relative;overscroll-behavior:contain}
+.w-body.fade{animation:fade .22s ease both}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.lights{display:flex;gap:8px;margin-right:10px}
+.lights button{width:12px;height:12px;border-radius:50%;display:grid;place-items:center;font-size:9px;font-weight:800;line-height:1;color:transparent}
+.lights .l-r{background:#ff5f57;box-shadow:inset 0 0 0 .5px #e2463f}
+.lights .l-y{background:#febc2e;box-shadow:inset 0 0 0 .5px #e1a116}
+.lights .l-g{background:#28c840;box-shadow:inset 0 0 0 .5px #14ae2c}
+.lights:hover button{color:rgba(0,0,0,.5)}
+.window.blur .lights button{background:#d6d6d8;box-shadow:inset 0 0 0 .5px #c4c4c6}
+.window.blur .lights:hover .l-r{background:#ff5f57}.window.blur .lights:hover .l-y{background:#febc2e}.window.blur .lights:hover .l-g{background:#28c840}
+.window.blur .w-bar,.window.blur .w-side{filter:saturate(.6)}
+.tbtn{width:30px;height:28px;border-radius:6px;display:grid;place-items:center;color:#5d5d62;flex:none}
+.tbtn:hover{background:rgba(0,0,0,.06)}
+.tbtn svg{width:17px;height:17px}
+.tbtn[disabled]{opacity:.35}
+.tbtn.text{width:auto;padding:0 10px;font-size:12px;font-weight:600;gap:6px;display:flex;align-items:center;text-decoration:none}
+.m-back{display:none}
+
+/* sidebar items */
+.s-sec{font-size:11px;font-weight:600;color:rgba(23,33,31,.5);padding:14px 10px 6px}
+.s-item{display:flex;align-items:center;gap:9px;width:100%;text-align:left;padding:7px 10px;border-radius:10px;font-size:13.5px;line-height:1.3;transition:background .15s}
+.s-item:hover{background:rgba(255,255,255,.3)}
+.s-item.on{background:rgba(255,255,255,.62);font-weight:600;box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 0 0 .5px rgba(20,30,30,.08),0 2px 8px rgba(20,30,30,.08)}
+.s-item .cnt{margin-left:auto;color:var(--text3);font-size:12px;font-weight:400}
+.s-ico{width:16px;height:16px;flex:none;color:var(--accent)}
+
+/* ---------- Preview (Resume) ---------- */
+.pv-canvas{min-height:100%;padding:28px 24px 48px;background:rgba(40,55,55,.06);display:flex;justify-content:center}
+.pv-page{zoom:var(--z,1);flex:none}
+.pv-thumbs{display:grid;gap:14px;justify-items:center;padding-top:6px}
+.pv-thumb{width:128px;padding:6px;border-radius:6px}
+.pv-thumb.on{background:rgba(0,0,0,.1)}
+.pv-thumb .mini{width:116px;height:164px;overflow:hidden;background:#fff;box-shadow:0 0 0 .5px rgba(0,0,0,.15),0 2px 6px rgba(0,0,0,.1);pointer-events:none}
+.pv-thumb .mini > *{zoom:.146}
+.pv-thumb span{display:block;text-align:center;font-size:11px;color:var(--text2);margin-top:6px}
+
+/* the CV itself — a real-looking A4 page */
+.cv{width:794px;min-height:1123px;background:#fff;color:#1b1b1d;padding:58px 64px 56px;font-size:10.6px;line-height:1.5;letter-spacing:0;
+  box-shadow:0 0 0 .5px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.06),0 14px 40px rgba(0,0,0,.1)}
+.cv header{display:flex;gap:24px;align-items:flex-start;padding-bottom:18px;border-bottom:1.5px solid #1b1b1d}
+.cv header .who{flex:1}
+.cv h1{font-family:var(--serif);font-weight:400;font-size:40px;line-height:1;letter-spacing:-.015em}
+.cv .role{font-size:12px;color:#4a4a4f;margin-top:8px}
+.cv .contact{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:10px;font-size:10px;color:#4a4a4f}
+.cv .contact a{text-decoration:none}
+.cv .avatar{width:78px;height:96px;flex:none;overflow:hidden;border-radius:4px}
+.cv section{margin-top:18px}
+.cv h2{font-size:9.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#1b1b1d;padding-bottom:5px;border-bottom:.5px solid #cfcfd2;margin-bottom:8px}
+.cv .row{display:grid;grid-template-columns:1fr auto;column-gap:16px;padding:4px 0}
+.cv .row h3{font-size:11.4px;font-weight:700}
+.cv .row .d{font-size:10px;color:#6b6b70;white-space:nowrap;font-variant-numeric:tabular-nums}
+.cv .row .o{grid-column:1/-1;color:#4a4a4f}
+.cv .row ul{grid-column:1/-1;margin:3px 0 0 14px;color:#2f2f33}
+.cv .row li{margin-top:1px}
+.cv .awards{display:grid;grid-template-columns:1fr auto;gap:3px 16px}
+.cv .awards .d{color:#6b6b70;white-space:nowrap}
+.cv .skills{display:grid;grid-template-columns:110px 1fr;gap:3px 12px}
+.cv .skills dt{font-weight:700}
+.cv .skills dd{color:#2f2f33}
+
+/* ---------- Projects (Finder) ---------- */
+.fd{padding:22px 26px 40px}
+.fd-sec{display:flex;align-items:center;gap:12px;font-size:15px;font-weight:700;color:rgba(23,33,31,.75);margin:2px 4px 16px}
+.fd-sec::after{content:"";flex:1;height:1px;background:rgba(20,30,30,.08)}
+/* auto-fit: when the window grows, folders move up and spread out to fill the row */
+.fd-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px 14px}
+.fd-item{display:flex;flex-direction:column;align-items:center;text-align:center;padding:16px 12px 16px;border-radius:18px;cursor:default;transition:background .2s,box-shadow .2s}
+.fd-item:hover{background:rgba(255,255,255,.45);box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 0 0 .5px rgba(20,30,30,.06),0 6px 18px rgba(20,30,30,.08)}
+.fd-item:focus-visible{outline:2px solid var(--accent)}
+.fd-item:active .fd-name{background:var(--accent);color:#fff}
+.folder{position:relative;width:150px;height:118px}
+.folder .back{position:absolute;inset:8px 0 0 0;border-radius:12px;background:linear-gradient(180deg,#6d8df2,#5677e6)}
+.folder .back::before{content:"";position:absolute;left:0;top:-8px;width:58px;height:16px;border-radius:9px 11px 0 0;background:#6d8df2}
+.fd-grid .fd-item{justify-self:center;width:100%;max-width:250px}
+.fd-tag{margin-top:4px;font-size:11px;font-weight:600;color:#5677e6}
+.folder .paper{position:absolute;left:16px;right:16px;top:2px;height:84px;border-radius:4px;overflow:hidden;background:#fff;
+  box-shadow:0 1px 3px rgba(0,0,0,.25);transform:rotate(-3deg);transition:transform .3s var(--spring)}
+.folder .paper img{width:100%;height:100%;object-fit:cover}
+.folder .front{position:absolute;left:0;right:0;bottom:0;height:62px;border-radius:9px 9px 13px 13px;
+  background:linear-gradient(180deg,#a8bcff 0%,#8aa4fb 40%,#7591f3 100%);
+  box-shadow:inset 0 1.5px 0 rgba(255,255,255,.75),inset 0 -2px 4px rgba(40,60,160,.18),0 3px 10px rgba(50,70,170,.28);transform-origin:bottom;transition:transform .3s var(--spring)}
+.folder .front::after{content:none}
+.fd-item:hover .paper{transform:rotate(-1deg) translateY(-12px)}
+.fd-item:hover .front{transform:perspective(300px) rotateX(-12deg)}
+.fd-name{margin-top:12px;font-size:13px;font-weight:600;padding:1px 6px;border-radius:4px}
+.fd-blurb{margin-top:5px;font-size:12px;line-height:1.45;color:var(--text3);max-width:210px}
+.crumbs{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;min-width:0}
+.crumbs span{color:var(--text3);font-weight:500}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-top:12px}
+.gallery figure{cursor:zoom-in}
+.gallery .g-img{aspect-ratio:4/3;border-radius:8px;overflow:hidden;background:#f2f2f4;box-shadow:inset 0 0 0 .5px rgba(0,0,0,.1)}
+.gallery img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.gallery figure:hover img{transform:scale(1.04)}
+.gallery figcaption{font-size:11.5px;color:var(--text3);margin-top:6px;line-height:1.35}
+#ql{position:fixed;inset:0;z-index:95;display:none;place-items:center;padding:48px;background:rgba(20,18,16,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);cursor:zoom-out}
+#ql.show{display:grid;animation:fade .2s ease both}
+#ql figure{max-width:min(1100px,82vw);text-align:center;cursor:default}
+#ql img{max-width:100%;max-height:78vh;border-radius:10px;box-shadow:0 30px 80px rgba(0,0,0,.4);background:#fff}
+#ql img.slide{animation:qlSlide .28s var(--spring) both}
+@keyframes qlSlide{from{opacity:0;transform:translateX(var(--from,0px))}to{opacity:1;transform:none}}
+#ql figcaption{color:#fff;font-size:13px;margin-top:12px;opacity:.9}
+#ql figcaption span{opacity:.6;margin-left:10px;font-variant-numeric:tabular-nums}
+.ql-nav{position:absolute;top:50%;width:48px;height:48px;margin-top:-24px;border-radius:50%;display:grid;place-items:center;color:#fff;cursor:pointer;
+  background:rgba(255,255,255,.16);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 6px 18px rgba(0,0,0,.25);transition:background .15s,transform .15s}
+.ql-nav:hover{background:rgba(255,255,255,.28);transform:scale(1.06)}
+.ql-nav svg{width:22px;height:22px}
+.ql-prev{left:max(16px,3vw)}.ql-next{right:max(16px,3vw)}
+.ql-close{position:absolute;top:18px;right:18px;width:36px;height:36px;margin:0;font-size:22px}
+.ql-hint{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);font-size:12px;color:rgba(255,255,255,.65)}
+.ql-hint kbd{font:inherit;padding:1px 6px;border-radius:5px;background:rgba(255,255,255,.15)}
+@media (max-width:767px){.ql-nav{width:40px;height:40px;margin-top:-20px}.ql-hint{display:none}#ql figure{max-width:100%}}
+
+/* ---------- Mail (compose) ---------- */
+.mail{display:flex;flex-direction:column;height:100%}
+.m-row{display:flex;align-items:center;gap:10px;padding:0 20px;min-height:42px;border-bottom:.5px solid var(--sep);font-size:13px}
+.m-row label{color:var(--text3);width:56px;flex:none}
+.m-row input{flex:1;border:0;outline:0;font:inherit;font-size:13px;background:none;color:var(--text);padding:10px 0}
+.to-chip{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:99px;background:#e7efff;color:#1a4fbf;font-weight:500}
+.copy{margin-left:auto;font-size:12px;font-weight:600;color:var(--accent);padding:4px 8px;border-radius:6px;cursor:pointer}
+.copy:hover{background:#eef3ff}
+.mail textarea{flex:1;border:0;outline:0;resize:none;font:inherit;font-size:14px;line-height:1.6;padding:16px 20px;color:var(--text)}
+.m-foot{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:12px 20px;border-top:.5px solid var(--sep);font-size:12px;color:var(--text3);background:rgba(255,255,255,.3)}
+.mail textarea{background:transparent}
+.m-foot a,.m-foot button{color:var(--accent);font-weight:600;text-decoration:none;cursor:pointer}
+.send{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 14px;border-radius:7px;background:var(--accent);color:#fff;font-size:12.5px;font-weight:600;cursor:pointer}
+.send:hover{background:#0050e0}
+.send svg{width:14px;height:14px}
+
+.pj{max-width:760px;margin:0 auto;padding:28px 36px 56px}
+.pj-hero{border-radius:12px;overflow:hidden;aspect-ratio:16/8;background:#f2f2f4;box-shadow:inset 0 0 0 .5px rgba(0,0,0,.08)}
+.pj-hero img{width:100%;height:100%;object-fit:cover;display:block}
+.pj-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-top:24px}
+.pj h2{font-size:28px;font-weight:700;letter-spacing:-.025em;margin-top:6px}
+.pj .meta{font-size:14px;color:var(--text2);margin-top:6px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.chip{font-size:12px;font-weight:500;padding:4px 9px;border-radius:6px;background:#f2f2f4;color:var(--text2)}
+.pj p,.pj li{font-size:14.5px;line-height:1.7;color:#3a3a3e}
+.pj p{margin-top:18px}
+.pj h4{font-size:13px;font-weight:700;margin-top:28px}
+.pj ul{margin:8px 0 0 18px}
+.flow{display:grid;grid-template-columns:repeat(auto-fit,minmax(118px,1fr));gap:8px;margin-top:12px;counter-reset:s}
+.flow div{font-size:12px;line-height:1.45;padding:12px 11px;border-radius:10px;background:#f4f4f6;color:var(--text2)}
+.flow div::before{counter-increment:s;content:counter(s,decimal-leading-zero);display:block;font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:4px}
+.flow div.key{background:#eaf1ff;color:#173a80;box-shadow:inset 0 0 0 1px #c8dbff}
+.flow div.key::before{color:var(--accent)}
+.vid{position:relative;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#000;margin-top:10px}
+.vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vid .poster{position:absolute;inset:0;width:100%;height:100%;cursor:pointer}
+.vid .poster img{width:100%;height:100%;object-fit:cover;opacity:.92}
+.vid .poster::after{content:"";position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;
+  background:rgba(255,255,255,.22) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M9 7v10l8-5z' fill='white'/></svg>") center/34px no-repeat;
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:inset 0 0 0 .5px rgba(255,255,255,.4)}
+.m-tabs{display:none}
+
+/* ---------- Notes ---------- */
+.notes{display:flex;height:100%}
+.n-list{width:250px;flex:none;border-right:.5px solid var(--sep);overflow:auto;padding:8px}
+.n-item{display:block;width:100%;text-align:left;padding:9px 12px;border-radius:7px}
+.n-item + .n-item{margin-top:2px}
+.n-item.on{background:rgba(255,214,70,.55);box-shadow:inset 0 1px 0 rgba(255,255,255,.6)}
+.n-list{border-right-color:rgba(255,255,255,.45)!important}
+.n-item b{display:block;font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.n-item span{display:block;font-size:12px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.n-item span em{font-style:normal;color:var(--text2);margin-right:6px}
+.n-body{flex:1;overflow:auto;padding:22px 48px 48px}
+.n-date{text-align:center;font-size:12px;color:var(--text3)}
+.n-body h1{font-size:26px;font-weight:700;letter-spacing:-.02em;margin-top:18px}
+.n-body p{font-size:15px;line-height:1.65;margin-top:12px;color:#2c2c2f}
+.n-body .zh{font-size:17px}
+.check{list-style:none;margin-top:14px;display:grid;gap:10px}
+.check li{display:flex;gap:10px;align-items:flex-start;font-size:15px;line-height:1.45}
+.check li::before{content:"";flex:none;width:18px;height:18px;border-radius:50%;border:1.5px solid #c7c7cc;margin-top:1px}
+.check li.done{color:var(--text3)}
+.check li.done::before{border-color:#e5a500;background:#e5a500 url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M6 12.5l4 4 8-9' stroke='white' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>") center/12px no-repeat}
+
+/* ---------- QuickTime (Videos) ---------- */
+.window.dark{background:rgba(22,26,26,.55)}
+.window.dark::after{box-shadow:inset 0 1px 0 rgba(255,255,255,.2),inset 0 0 0 1px rgba(255,255,255,.08)}
+.window.dark .w-main{background:rgba(10,12,12,.35)}
+.window.dark .w-bar{background:rgba(255,255,255,.04);border-bottom-color:rgba(255,255,255,.08);color:#e8e8ea;box-shadow:none}
+.window.dark .pill{background:rgba(255,255,255,.1);box-shadow:inset 0 1px 0 rgba(255,255,255,.15)}
+.window.dark .w-title small{color:#8e8e93}
+.window.dark .tbtn{color:#bdbdc2}
+.window.dark .tbtn:hover{background:rgba(255,255,255,.08)}
+/* player on the left, list on the right; each side scrolls on its own so the player never leaves view */
+.w-body{container-type:inline-size}
+.yt{display:grid;grid-template-columns:minmax(0,1fr) 280px;height:100%;color:#ececee}
+.yt-main{overflow:auto;padding:24px 26px 32px}
+.yt-main .vid{margin-top:0;border-radius:14px;box-shadow:0 0 0 1px rgba(255,255,255,.08),0 18px 40px rgba(0,0,0,.35)}
+.yt-kind{margin-top:20px;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.5)}
+.yt-title{margin-top:6px;font-size:24px;font-weight:700;letter-spacing:-.02em;line-height:1.2}
+.yt-sub{margin-top:8px;max-width:620px;font-size:14px;line-height:1.6;color:rgba(255,255,255,.66)}
+.yt-open{display:inline-flex;align-items:center;gap:6px;margin-top:18px;height:32px;padding:0 14px;border-radius:99px;font-size:12.5px;font-weight:600;text-decoration:none;color:#fff;
+  background:rgba(255,255,255,.12);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 0 0 .5px rgba(255,255,255,.1)}
+.yt-open:hover{background:rgba(255,255,255,.18)}
+.yt-open svg{width:13px;height:13px}
+.yt-list{overflow:auto;padding:24px 16px 24px;border-left:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.025)}
+.yt-h{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.45);padding:0 8px 10px}
+.yt-item{display:grid;grid-template-columns:118px 1fr;gap:12px;align-items:center;width:100%;text-align:left;padding:8px;border-radius:14px;color:#ececee;transition:background .15s}
+.yt-item + .yt-item{margin-top:4px}
+.yt-item:hover{background:rgba(255,255,255,.06)}
+.yt-item.on{background:rgba(255,255,255,.1);box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.yt-thumb{position:relative;aspect-ratio:16/9;border-radius:9px;overflow:hidden;background:#000}
+.yt-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.yt-thumb em{position:absolute;right:5px;bottom:5px;font-style:normal;font-size:10px;font-weight:600;padding:1px 6px;border-radius:5px;background:rgba(0,0,0,.72);color:#fff}
+.yt-item.on .yt-thumb em{background:#e5322d}
+.yt-meta b{display:block;font-size:13px;font-weight:600;line-height:1.35}
+.yt-meta small{display:block;margin-top:3px;font-size:11.5px;color:rgba(255,255,255,.5)}
+@container (max-width:720px){
+  .yt{grid-template-columns:1fr;height:auto}
+  .yt-main{overflow:visible;padding:16px}
+  .yt-list{overflow:visible;border-left:0;border-top:1px solid rgba(255,255,255,.08);padding:16px 8px}
+}
+/* thin scrollbars that sit quietly on glass */
+.window ::-webkit-scrollbar{width:10px;height:10px}
+.window ::-webkit-scrollbar-thumb{background:rgba(0,0,0,.18);border-radius:99px;border:3px solid transparent;background-clip:padding-box}
+.window.dark ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.22);border:3px solid transparent;background-clip:padding-box}
+.window ::-webkit-scrollbar-track{background:transparent}
+.d-app:focus{outline:none}
+.d-app:focus-visible{outline:2px solid rgba(255,255,255,.9);outline-offset:3px;border-radius:14px}
+
+/* ---------- Safari (GitHub / LinkedIn) ---------- */
+.addr{flex:1;max-width:520px;margin:0 auto;height:30px;border-radius:8px;background:rgba(0,0,0,.055);display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;color:var(--text2)}
+.addr svg{width:12px;height:12px}
+.profile{max-width:560px;margin:0 auto;padding:44px 32px;text-align:center}
+.profile .pic{width:104px;height:104px;border-radius:50%;overflow:hidden;margin:0 auto 18px;box-shadow:0 0 0 .5px rgba(0,0,0,.1)}
+.profile h2{font-size:24px;font-weight:700;letter-spacing:-.02em}
+.profile .hl{color:var(--text2);font-size:14px;margin-top:6px;line-height:1.5}
+.profile .stats{display:flex;justify-content:center;gap:28px;margin:22px 0;font-size:12px;color:var(--text3)}
+.profile .stats b{display:block;font-size:17px;color:var(--text)}
+.btn{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;padding:8px 16px;border-radius:8px;text-decoration:none;background:#1d1d1f;color:#fff}
+.btn:hover{background:#000}
+.btn.ghost{background:#f2f2f4;color:var(--text)}
+.repos{text-align:left;margin-top:26px;display:grid;gap:8px}
+.repo{display:block;text-decoration:none;border:.5px solid rgba(0,0,0,.14);border-radius:10px;padding:12px 14px}
+.repo:hover{background:#f7f7f8}
+.repo b{font-size:14px}
+.repo span{display:block;font-size:12px;color:var(--text3);margin-top:3px}
+.muted{font-size:13px;color:var(--text3)}
+
+/* ================= Dock ================= */
+.dock{position:absolute;z-index:60;bottom:8px;left:50%;transform:translateX(-50%);display:flex;align-items:flex-end;gap:6px;padding:6px 8px;border-radius:26px;
+  background:rgba(255,255,255,.2);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);
+  box-shadow:var(--glass-rim),var(--glass-edge),0 16px 40px rgba(15,30,30,.22)}
+.d-sep{width:1px;height:46px;align-self:center;margin:0 4px;background:rgba(255,255,255,.5);box-shadow:1px 0 0 rgba(0,0,0,.08)}
+.d-app{--s:52px;position:relative;width:var(--s);height:var(--s);flex:none;transition:width .14s ease-out,height .14s ease-out;display:block;text-decoration:none}
+.d-app svg{width:100%;height:100%;filter:drop-shadow(0 1.5px 2px rgba(0,0,0,.22)) drop-shadow(0 4px 8px rgba(0,0,0,.08))}
+.d-app .dot{position:absolute;left:50%;bottom:-5px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:rgba(0,0,0,.72);opacity:0}
+.d-app.running .dot{opacity:1}
+.d-app .tip{position:absolute;bottom:calc(100% + 12px);left:50%;transform:translateX(-50%);white-space:nowrap;font-size:13px;padding:3px 10px;border-radius:6px;color:var(--text);
+  background:rgba(240,238,235,.82);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);box-shadow:0 0 0 .5px rgba(0,0,0,.14),0 4px 12px rgba(0,0,0,.14);opacity:0;pointer-events:none;transition:opacity .1s}
+.d-app:hover .tip{opacity:1}
+.d-app.bounce svg{animation:bounce .7s ease-in-out}
+@keyframes bounce{0%,100%{transform:translateY(0)}30%{transform:translateY(-24px)}55%{transform:translateY(0)}75%{transform:translateY(-8px)}}
+.d-app .lbl{display:none}
+
+/* ================= Recruiter mode ================= */
+#recruiter{display:none;position:fixed;inset:0;overflow:auto;background:#e9e8e6}
+body.recruiter #recruiter{display:block}
+body.recruiter #desktop{display:none}
+.rec-bar{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 20px;font-size:13px;
+  background:rgba(245,244,242,.82);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:.5px solid var(--sep)}
+.rec-bar .r{display:flex;gap:10px;align-items:center}
+.rec-bar .mb-item{cursor:pointer}
+.rec-page{display:flex;justify-content:center;padding:28px 16px 64px}
+
+/* ================= Mobile: iPhone home screen ================= */
+@media (max-width:767px){
+  :root{--mb-h:46px}
+  .menubar{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:none;padding:0 14px}
+  .mb-left > :not(.clock-m){display:none}
+  .mb-right .clock,.mb-right .wifi,.mb-right .batt{display:none}
+  .clock-m{display:block!important;font-weight:600;font-size:16px;padding-left:12px}
+  body.wall-dark .menubar{color:#fff}
+  .rec .txt{display:none}
+  .rec .txt-m{display:inline}
+  .rec-hint{max-width:calc(100vw - 28px);top:calc(var(--mb-h) - 2px)}
+  .nameplate{top:calc(var(--mb-h) + 28px);transform:translateX(-50%)}
+  .nameplate h1{font-size:clamp(46px,14vw,70px);margin-top:10px}
+  .nameplate .sub{font-size:13px;margin-top:12px}
+  .widget{position:absolute!important;cursor:default}
+  .w-um,.w-now,.w-clock,.w-cal{display:none}
+  .w-tegas,.w-sticky{display:none}
+  /* on phones she leans on the app grid instead of the dock */
+  :root{--j-size:min(46vh,360px);--dock-top:220px}
+  .bubble{left:50%;right:auto;bottom:91%;transform:translate(-50%,8px) scale(.95);transform-origin:50% 100%;max-width:min(300px,86vw)}
+  .bubble.show{transform:translateX(-50%)}
+  .bubble::after{left:50%;right:auto;margin-left:-8px}
+  .polaroid > .inner{width:150px}
+  .sticky > .inner{width:156px;min-height:150px;font-size:21px;padding:16px}
+  .sticky small{font-size:16px}
+  .dock{left:12px;right:12px;bottom:18px;transform:none;display:grid;grid-template-columns:repeat(4,1fr);gap:18px 6px;padding:16px 10px 14px;border-radius:30px;justify-items:center}
+  .d-sep{display:none}
+  .d-app{--s:58px!important;height:auto;width:auto}
+  .d-app svg{width:58px;height:58px}
+  .d-app .tip,.d-app .dot{display:none}
+  .d-app .lbl{display:block;font-size:11px;text-align:center;margin-top:5px;color:var(--text)}
+  .window,.window.full{position:fixed;left:0!important;top:0!important;width:100vw!important;height:100%!important;border-radius:0;z-index:80;transition:none}
+  .w-side{display:none}
+  .w-bar{height:auto;padding:calc(env(safe-area-inset-top) + 10px) 10px 10px}
+  .lights{display:none}
+  .m-back{display:flex;align-items:center;font-size:16px;font-weight:500;color:var(--accent);padding:4px 6px}
+  .window.dark .m-back{color:#4ea1ff}
+  .w-title{text-align:center;margin-right:0;flex:1}
+  .w-bar .tbtn:not(.keep),.w-bar .pill:not(.keep-pill),.pill i{display:none}
+  .pv-canvas{padding:0;background:#fff}
+  .pv-page{zoom:1!important;width:100%}
+  .cv{width:100%;min-height:0;padding:22px 18px 40px;font-size:13px;box-shadow:none}
+  .cv header{flex-direction:column-reverse;gap:14px}
+  .cv h1{font-size:36px}
+  .cv .role{font-size:13.5px}
+  .cv .contact{font-size:12.5px}
+  .cv .row{grid-template-columns:1fr}
+  .cv .row h3{font-size:14px}
+  .cv .row .d{font-size:12px}
+  .cv .awards{grid-template-columns:1fr;gap:0}
+  .cv .awards .d{margin-bottom:8px;font-size:12px}
+  .cv .skills{grid-template-columns:1fr;gap:0}
+  .cv .skills dd{margin-bottom:8px}
+  .cv h2{font-size:11px}
+  .m-tabs{display:flex;gap:6px;overflow-x:auto;padding:12px 16px 0;scrollbar-width:none}
+  .m-tabs button{flex:none;font-size:13px;font-weight:600;padding:7px 12px;border-radius:99px;background:#f0f0f2}
+  .m-tabs button.on{background:#1d1d1f;color:#fff}
+  .pj{padding:16px 16px 48px}
+  .pj h2{font-size:24px}
+  .notes{display:block}
+  .n-list{display:none}
+  .n-body{padding:16px 18px 48px}
+  .qt{padding:12px}
+  .fd{padding:16px 12px 40px}
+  .fd-grid{grid-template-columns:repeat(2,1fr);gap:14px 8px}
+  .folder{width:128px;height:100px}
+  .folder .paper{height:70px}
+  .folder .front{height:62px}
+  .m-row{padding:0 14px}
+  .m-row label{width:48px}
+  #ql{padding:12px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs id="defs"></defs></svg>
+
+<div id="desktop">
+  <div id="wallWrap"></div>
+  <header class="menubar" id="menubar">
+    <div class="mb-left">
+      <span class="clock-m" id="clockM" style="display:none"></span>
+      <button class="mb-item mb-mark" data-menu="j" aria-label="Main menu">J</button>
+      <b class="mb-item mb-app" id="mbApp">Janet Soo Yu Ting</b>
+      <button class="mb-item" data-menu="file">File</button>
+      <button class="mb-item" data-menu="go">Go</button>
+      <button class="mb-item" data-menu="help">Help</button>
+    </div>
+    <div class="mb-right">
+      <button class="mb-item rec" data-act="recruiter" aria-pressed="false" title="Switch to the classic resume view"><svg class="r-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg><span class="txt">Recruiter Mode</span><span class="txt-m">Recruiter</span><span class="switch"></span></button>
+      <span class="mb-item wifi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2.5 9a14 14 0 0 1 19 0M5.5 12.5a9.5 9.5 0 0 1 13 0M8.6 16a5 5 0 0 1 6.8 0"/><circle cx="12" cy="19.2" r="1.3" fill="currentColor" stroke="none"/></svg></span>
+      <span class="mb-item batt" aria-hidden="true"><svg viewBox="0 0 28 16" style="width:24px"><rect x=".75" y="2.75" width="23" height="10.5" rx="3" fill="none" stroke="currentColor" stroke-opacity=".45" stroke-width="1.2"/><rect x="2.5" y="4.5" width="17" height="7" rx="1.6" fill="currentColor"/><path d="M25.5 6.3v3.4c.8-.3 1.3-1 1.3-1.7s-.5-1.4-1.3-1.7z" fill="currentColor" fill-opacity=".45"/></svg></span>
+      <span class="mb-item clock" id="clock"></span>
+    </div>
+  </header>
+  <div class="menu" id="menu" role="menu"></div>
+  <div class="rec-hint" id="recHint" role="status"><span><b>Recruiter?</b> Click for the classic resume view</span><button data-act="dismissHint" aria-label="Dismiss">×</button></div>
+
+  <div class="nameplate">
+    <p class="eyebrow intro-item">Portfolio — 2026</p>
+    <h1 class="intro-item" style="transition-delay:.06s"><em>Janet</em> Soo Yu Ting</h1>
+    <p class="sub intro-item" style="transition-delay:.14s">Software Engineering · Universiti Malaya<br>Yayasan Khazanah Watan Scholar</p>
+  </div>
+
+  <div id="widgets"></div>
+
+  <div class="janet-wrap" id="janetWrap">
+    <div class="bubble" id="bubble" role="status" aria-live="polite"><p class="who">Janet</p><p id="bubbleText"></p><i class="more" aria-hidden="true">▼</i></div>
+    <button class="janet" id="janet" aria-label="Talk to Janet"><span class="j-sprite" id="jSprite"></span></button>
+  </div>
+
+  <section class="window" id="win" hidden aria-label="Application window"></section>
+
+  <nav class="dock" id="dock" aria-label="Dock"></nav>
+</div>
+
+<div id="ql" role="dialog" aria-label="Image preview"></div>
+
+<div id="recruiter">
+  <div class="rec-bar">
+    <b>Janet Soo Yu Ting — CV</b>
+    <div class="r">
+      <a class="btn" id="recPdf" download>Download PDF</a>
+      <button class="mb-item rec" data-act="recruiter" aria-pressed="true"><span class="txt">Recruiter Mode</span><span class="txt-m">Recruiter</span><span class="switch"></span></button>
+    </div>
+  </div>
+  <div class="rec-page"><div class="pv-page" id="recPage"></div></div>
+</div>
+
+<script>
+/* ==================== Content — edit here ==================== */
+const ME = {
+  name: "Janet Soo Yu Ting",
+  headline: "Software Engineering undergraduate · Universiti Malaya · Yayasan Khazanah Watan Scholar",
+  email: "janetsooyuting.dev@gmail.com",
+  linkedin: "https://www.linkedin.com/in/janet-soo-yu-ting-a8138a3aa",
+  github: "https://github.com/Janet-lab3142",
+  githubUser: "Janet-lab3142",
+  youtube: "https://youtube.com/@jane_jennh",
+  pdf: "Janet_Soo_Yu_Ting_CV.pdf", // TODO: one-page CV without phone / IC / address, saved next to this file
+};
+
+// Photos: put the file name in `src` once you have the originals. `hint` is what shows until then.
+const PHOTOS = {
+  avatar: { src: "assets/photos/janet-real.webp", hint: "PHOTO #24\nportrait" },
+  tegas:  { src: "", hint: "PHOTO #10\nTEGAS 2nd Runner-up" },
+  stage:  { src: "", hint: "PHOTO #3\nTnT prize-giving" },
+  um:     { src: "", hint: "PHOTO #21\nUniversiti Malaya" },
+  yk:     { src: "", hint: "PHOTO #1\nYK Awards Day 2025" },
+  pfl:    { src: "", hint: "PHOTO #2\nPlay For Literacy" },
+};
+
+// Wallpaper: leave empty for the drawn misty lake, or put a photo here (file name or URL).
+// Current: Kuching riverside at blue hour, Sarawak (Unsplash, free to use)
+// Kuching riverside option: "https://images.unsplash.com/photo-1572535057278-f5fb93f636b5?auto=format&fit=crop&w=2400&q=80" (set WALLPAPER_IS_DARK = true with it)
+const WALLPAPER = "";
+const WALLPAPER_STYLE = "solid"; // "solid" = warm taupe behind the character, "lake" = the drawn misty lake
+const WALLPAPER_IS_DARK = false; // light text on the desktop when the photo is dark
+
+// true = open the CV window by itself after the intro; false = start on the desktop with Janet saying hi
+const AUTO_OPEN_RESUME = false;
+
+const EDUCATION = [
+  { t: "Bachelor of Computer Science (Software Engineering)", o: "Universiti Malaya", d: "Sep 2026 – Present", p: ["Year 1 · Yayasan Khazanah Watan Scholar"] },
+  { t: "Foundation in Physical Science", o: "Universiti Malaya", d: "Jul 2025 – May 2026", p: ["CGPA 3.57 / 4.00 · Semester 2 Dean's List (GPA 3.79) · A+ in Programming II"] },
+  { t: "SPM — 10A (5A+, 5A) · MUET Band 4", o: "SMK Siburan, Sarawak", d: "2020 – 2025", p: [] },
+];
+
+const EXPERIENCE = [
+  { t: "Software Developer (Project-based)", o: "Applied Electronics Solutions", d: "2026", p: [
+    "Built a self-service sign-up flow with email OTP verification for a subscription-based electricity monitoring platform; accounts are only written to the database after verification.",
+    "Designed UI mockups for subscription modules and normalized relational schemas (ERD, tables, foreign-key constraints) in SQL Server." ] },
+  { t: "Volunteer Intern", o: "PEMIMPIN — Global Education Leaders Malaysia", d: "Jun – Jul 2026", p: [
+    "Curated media content, managed Excel datasets and supported event logistics for literacy initiatives." ] },
+  { t: "Community Math Tutor", o: "Trinity Learning Care", d: "2024 – 2025", p: [
+    "Designed problem-solving exercise modules and gave weekly mentorship to secondary students." ] },
+  { t: "Alumni Outreach Speaker", o: "SMK Siburan", d: "2026", p: [] },
+];
+
+const AWARDS = [
+  ["Yayasan Khazanah Watan Scholarship", "2025 – Present"],
+  ["Roots and Shoots Malaysia Award (RASMA) — 3 Stars", "2026"],
+  ["Aerorobotech Championship — Obstacle Drone, 5th place (IPTA/IPTS)", "2026"],
+  ["TEGAS Ambassador", "2023 – 2025"],
+  ["Think & Thinker Battlefield — State 2nd Runner-up (GripGenius)", "2024"],
+  ["Girls Code Mobile App Challenge — State Semi-finalist", "2023"],
+  ["BugCrusher Junior Hackathon — State Finalist, Consolation Prize", "2022"],
+];
+
+const SKILLS = [
+  ["Languages", "C++, Python, SQL, PHP, HTML, CSS"],
+  ["Backend & data", "CodeIgniter, Microsoft SQL Server, MySQL, relational database design (ERD)"],
+  ["Tools", "Git & GitHub, VS Code, Figma, Arduino, MIT App Inventor"],
+];
+
+const GROUPS = {
+  aet:   "Applied Electronics Solutions · 2026",
+  tegas: "TEGAS · Think & Thinker Battlefield 2024",
+};
+
+// cover: image on the folder and at the top of the project. gallery: { src } for a file, or { photo } for a PHOTOS key.
+const IMG = "assets/projects/";
+const PROJECTS = [
+  { id: "otp", group: "aet", icon: "otp", short: "OTP Sign-Up", name: "Sign-Up & OTP Verification System",
+    blurb: "Self-service sign-up where the account is only created after email OTP verification.",
+    cover: IMG + "otp-signup.png",
+    gallery: [
+      { src: IMG + "otp-signup.png", cap: "Create Account form" },
+      { src: IMG + "otp-verify.png", cap: "Verification code appears in place; fields lock" },
+      { src: IMG + "otp-email.png", cap: "The OTP email, valid for 10 minutes" },
+      { src: IMG + "otp-verified.png", cap: "Verified: only now is the account saved" },
+      { src: IMG + "otp-login.png", cap: "Redirect to sign in" } ],
+    meta: "Full-Stack Web Developer · Company project", tech: ["HTML", "PHP", "MySQL", "CodeIgniter", "SQL Server", "SMTP"],
+    overview: "Replaced manual account creation with self-service registration for a subscription-based electricity monitoring platform. Input is validated on both client and server, and no account is written to the database until the user verifies a one-time password sent by email. First built with plain PHP and MySQL, then implemented in CodeIgniter on Microsoft SQL Server.",
+    flow: ["User fills in username, email and password", "Client-side checks, then the server re-validates everything", "Server checks username and email are not taken", "6-digit OTP emailed via SMTP. Nothing saved yet", "Code field appears in place; fields lock; 60s resend cooldown", "Account written to the database only after OTP succeeds", "Success message, redirect to login"],
+    key: 5,
+    points: ["OTP expires after 10 minutes", "Deferred account creation means abandoned sign-ups never leave orphaned records", "Clear errors for taken usernames, registered emails, mismatched passwords, wrong or expired codes"] },
+  { id: "db", group: "aet", icon: "db", short: "Subscription DB", name: "Subscription Database Design",
+    blurb: "UI mockups and a normalized SQL Server schema for tracking subscriptions.",
+    cover: IMG + "db-mockup.png",
+    gallery: [
+      { src: IMG + "db-mockup.png", cap: "Subscription module mockup" },
+      { src: IMG + "db-schema.png", cap: "Customer table schema in SQL Server" },
+      { src: IMG + "db-erd.jpg", cap: "First ERD sketch" } ],
+    meta: "Software & Database Developer · Company project", tech: ["SQL Server", "T-SQL", "ERD", "UI mockups"],
+    overview: "Designed UI mockups for subscription management modules and the normalized relational schema behind them: ERD, tables and foreign-key constraints, focused on data integrity and query performance for tracking user subscriptions." },
+  { id: "grip", group: "tegas", icon: "grip", short: "GripGenius", name: "GripGenius — 6-DOF Robotic Arm",
+    blurb: "6-axis robotic arm driven from my own Android app. Built in 48 hours, 2nd Runner-up.",
+    cover: IMG + "grip-arm.jpg",
+    gallery: [
+      { src: IMG + "grip-arm-2.jpg", cap: "GripGenius, 3D-printed and servo-driven" },
+      { src: IMG + "grip-app-modes.jpg", cap: "App: choose Manual or Auto mode" },
+      { src: IMG + "grip-app-manual.jpg", cap: "Manual mode: one control per joint" },
+      { src: IMG + "grip-prize.jpg", cap: "Prize-giving at TEGAS Digital Village" },
+      { photo: "tegas", cap: "2nd Runner-up" } ],
+    meta: "Hardware & App Developer · Final · 2nd Runner-up · 48-hour build", tech: ["Arduino", "3D printing", "Servo motors", "Bluetooth HC-05", "MIT App Inventor"],
+    overview: "A six-degree-of-freedom robotic arm controlled from a custom Android app over Bluetooth, designed and built in 48 hours.",
+    points: ["Manual mode: drive each joint (grip, wrist pitch, wrist roll, elbow, arm, base) in real time", "Auto mode: set joint angles with sliders, save them as a sequence and replay with one tap", "In-app guide for pairing and both control modes"] },
+  { id: "smars", group: "tegas", icon: "smars", short: "SMARS Robot", name: "SMARS Robot",
+    blurb: "3D-printed robot with joystick, button and obstacle-avoiding modes over Bluetooth.",
+    cover: IMG + "smars-robot.jpg",
+    gallery: [
+      { src: IMG + "smars-modes.png", cap: "App: pick a control mode" },
+      { src: IMG + "smars-joystick.png", cap: "Joystick control with shovel slider" },
+      { src: IMG + "smars-obstacle.png", cap: "Obstacle-avoiding mode" },
+      { src: IMG + "smars-team.png", cap: "Team Swarm Patrol" } ],
+    meta: "Hardware & App Developer · Semi-final round · Team Swarm Patrol", tech: ["Arduino", "3D printing", "Bluetooth HC-05", "MIT App Inventor"],
+    overview: "A 3D-printed modular robot controlled from a custom Android app, then modified between rounds.",
+    points: ["Joystick and button modes with speed control and a slider for the shovel", "Obstacle-avoiding mode using sensors for autonomous navigation", "In-app Bluetooth pairing flow"],
+    videos: [["ecKS0g5CyP0", "Preliminary round"], ["OSq2w1owauU", "Semi-final: robot modifications"]] },
+];
+
+const VIDEOS = [
+  { id: "v8fUFkrayIk", kind: "Introduction", title: "Software Engineering Visume", sub: "Who I am and why software engineering. Recorded in my foundation year at Universiti Malaya.", dur: "2:01" },
+  { id: "ecKS0g5CyP0", kind: "Competition", title: "SMARS Robot — Preliminary round", sub: "Team Swarm Patrol at Think & Thinker Battlefield 2024: the robot and its control app.", dur: "3:37" },
+  { id: "OSq2w1owauU", kind: "Competition", title: "SMARS Robot — Semi-final", sub: "What we changed on the robot between rounds, including the ultrasonic sensor.", dur: "6:43" },
+];
+
+// Draft copy — rewrite in your own voice
+const NOTES = [
+  { id: "hi", title: "Hi, I'm Janet", date: "3 Nov 2026", preview: "First-year Software Engineering student…",
+    body: `<h1>Hi, I'm Janet 👋</h1>
+      <p>I'm a first-year Software Engineering student at Universiti Malaya and a Yayasan Khazanah Watan Scholar, from Siburan, Sarawak.</p>
+      <p>I like working end to end: from the database schema, to the server checks, to the button someone actually presses.</p>` },
+  { id: "why", title: "Why software engineering?", date: "3 Nov 2026", preview: "I asked ChatGPT what to study…",
+    body: `<h1>Why software engineering?</h1>
+      <p>Honest answer: I didn't know what to study, so I asked ChatGPT. It said Software Engineering.</p>
+      <p>Best prompt I ever wrote.</p>` },
+  { id: "fun", title: "Fun fact", date: "3 Nov 2026", preview: "我爱买拼多多…",
+    body: `<h1>Fun fact</h1>
+      <p class="zh">我爱买拼多多，因为爱拼才会赢。</p>
+      <p>Why do I shop on Pinduoduo? Because <em>爱拼才会赢</em>: those who give it their all, win.</p>` },
+  { id: "now", title: "Currently", date: "3 Nov 2026", preview: "Year 1 SE @ UM…",
+    body: `<h1>Currently</h1>
+      <ul class="check">
+        <li class="done">Year 1, Software Engineering @ Universiti Malaya</li>
+        <li class="done">Yayasan Khazanah Watan Scholar</li>
+        <li>Building this portfolio (you're looking at it)</li>
+        <li>Next: a Terminal app on this desktop</li>
+      </ul>` },
+];
+
+/* ==================== Icons ==================== */
+const GRAD = {
+  gloss: ["rgba(255,255,255,.3)", "rgba(255,255,255,0) 55%"],
+  preview: ["#fafbfd", "#d5dae4"], notes: ["#ffffff", "#ececec"], notesTop: ["#ffdb52", "#f0b800"],
+  folderBg: ["#f4f7fb", "#d9e1ec"], folderBack: ["#4f9be6", "#2f7fd6"], folderFront: ["#93ccff", "#5aa3ef"],
+  yt: ["#ffffff", "#e9e9ec"], ytRed: ["#ff3b3b", "#e00000"],
+  gh: ["#2f353d", "#0b0f14"], li: ["#2a90e6", "#0857a3"],
+  mail: ["#7ad9ff", "#1277ff"], env: ["#ffffff", "#e3ecf8"],
+  otp: ["#52e08f", "#04875d"], db: ["#b9a0ff", "#6a2bd6"], grip: ["#ffc27a", "#e3530a"], smars: ["#86ebfb", "#0a87aa"],
+};
+document.getElementById("defs").innerHTML =
+  Object.entries(GRAD).map(([k, [a, b]]) => {
+    const [bc, bo] = b.split(" ");
+    return `<linearGradient id="g-${k}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="${bo || "1"}" stop-color="${bc}"/></linearGradient>`;
+  }).join("") +
+  `<linearGradient id="g-ring" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9ff0ff"/><stop offset="1" stop-color="#2f7bff"/></linearGradient>
+   <clipPath id="sq"><rect x="5" y="5" width="90" height="90" rx="22"/></clipPath>`;
+
+const SQ = g => `<rect x="5" y="5" width="90" height="90" rx="22" fill="url(#g-${g})"/>`;
+const GH_PATH = "M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z";
+const ICONS = {
+  preview: SQ("preview") + `<rect x="25" y="17" width="42" height="56" rx="4" fill="#fff" stroke="#c6ccd8"/><rect x="31" y="25" width="20" height="4" rx="2" fill="#2f6bff"/><rect x="31" y="34" width="30" height="3" rx="1.5" fill="#c3c8d2"/><rect x="31" y="41" width="26" height="3" rx="1.5" fill="#c3c8d2"/><rect x="31" y="48" width="28" height="3" rx="1.5" fill="#c3c8d2"/><circle cx="61" cy="61" r="13" fill="rgba(160,205,255,.5)" stroke="#2b2f36" stroke-width="5"/><path d="M70.5 70.5 79 79" stroke="#2b2f36" stroke-width="8" stroke-linecap="round"/>`,
+  projects: SQ("folderBg") + `<path d="M17 30a5 5 0 0 1 5-5h16l5 5h35a5 5 0 0 1 5 5v35a5 5 0 0 1-5 5H22a5 5 0 0 1-5-5z" fill="url(#g-folderBack)"/>
+    <rect x="24" y="33" width="52" height="30" rx="2" fill="#fff" opacity=".95" transform="rotate(-3 50 48)"/>
+    <path d="M17 42a5 5 0 0 1 5-5h56a5 5 0 0 1 5 5v28a5 5 0 0 1-5 5H22a5 5 0 0 1-5-5z" fill="url(#g-folderFront)"/>
+    <path d="M18 43.5a4 4 0 0 1 4-4h56a4 4 0 0 1 4 4" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="1.2"/>
+    <rect x="42" y="52" width="16" height="2.6" rx="1.3" fill="#2f6fbf" opacity=".35"/>`,
+  notes: `<g clip-path="url(#sq)"><rect x="5" y="5" width="90" height="90" fill="url(#g-notes)"/><rect x="5" y="5" width="90" height="27" fill="url(#g-notesTop)"/></g><path d="M14 37h72" stroke="#d4d4d4" stroke-width="2" stroke-dasharray="2 3"/><path d="M20 51h60M20 63h60M20 75h42" stroke="#cdcdcd" stroke-width="3" stroke-linecap="round"/>`,
+  videos: SQ("yt") + `<rect x="17" y="29" width="66" height="44" rx="13" fill="url(#g-ytRed)"/><path d="M44 40v22l19-11z" fill="#fff"/>`,
+  github: SQ("gh") + `<g transform="translate(24 24) scale(3.25)"><path fill="#fff" d="${GH_PATH}"/></g>`,
+  linkedin: SQ("li") + `<circle cx="33" cy="32" r="6.2" fill="#fff"/><rect x="27.5" y="42" width="11" height="33" rx="1.5" fill="#fff"/>
+    <path d="M45 42h10.4v4.6c1.5-2.8 5-5.5 10.2-5.5C76 41.1 78 48 78 56.8V75H67V58.9c0-3.9-.1-8.8-5.4-8.8-5.4 0-6.2 4.2-6.2 8.5V75H45z" fill="#fff"/>`,
+  mail: SQ("mail") + `<rect x="19" y="29" width="62" height="43" rx="6" fill="url(#g-env)"/>
+    <path d="M20.5 70.5 43 50M79.5 70.5 57 50" stroke="#b9cbe4" stroke-width="2"/>
+    <path d="M20 31.5 50 55l30-23.5" fill="#fff" stroke="#c4d4ea" stroke-width="2" stroke-linejoin="round"/>`,
+  otp: SQ("otp") + `<path d="M38 46v-7a12 12 0 0 1 24 0v7" fill="none" stroke="#fff" stroke-width="6"/><rect x="30" y="45" width="40" height="30" rx="7" fill="#fff"/><circle cx="41" cy="60" r="3.3" fill="#04875d"/><circle cx="50" cy="60" r="3.3" fill="#04875d"/><circle cx="59" cy="60" r="3.3" fill="#04875d"/>`,
+  db: SQ("db") + `<path d="M30 32v36c0 4 9 7 20 7s20-3 20-7V32" fill="#fff" opacity=".92"/><ellipse cx="50" cy="32" rx="20" ry="7" fill="#fff"/><path d="M30 44c0 4 9 7 20 7s20-3 20-7M30 56c0 4 9 7 20 7s20-3 20-7" fill="none" stroke="#7c3aed" stroke-width="2.5"/>`,
+  grip: SQ("grip") + `<rect x="27" y="70" width="32" height="8" rx="3" fill="#fff"/><path d="M43 70 35 48 58 34" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/><circle cx="35" cy="48" r="5" fill="#fff" stroke="#e3530a" stroke-width="2.5"/><circle cx="43" cy="70" r="5" fill="#fff" stroke="#e3530a" stroke-width="2.5"/><path d="M58 34l9-7M58 34l11 2" stroke="#fff" stroke-width="5" stroke-linecap="round"/>`,
+  smars: SQ("smars") + `<rect x="27" y="36" width="46" height="27" rx="7" fill="#fff"/><circle cx="42" cy="49.5" r="6" fill="#0a87aa"/><circle cx="58" cy="49.5" r="6" fill="#0a87aa"/><rect x="23" y="63" width="54" height="12" rx="6" fill="#0d3644" opacity=".88"/><circle cx="31" cy="69" r="3" fill="#86ebfb"/><circle cx="50" cy="69" r="3" fill="#86ebfb"/><circle cx="69" cy="69" r="3" fill="#86ebfb"/>`,
+};
+const icon = id => `<svg viewBox="0 0 100 100" aria-hidden="true">${ICONS[id]}<rect x="5" y="5" width="90" height="90" rx="22" fill="url(#g-gloss)"/></svg>`;
+
+const I = { // toolbar glyphs
+  sidebar: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M9 5v14"/></svg>`,
+  zoomOut: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 20 20M7.5 10.5h6"/></svg>`,
+  zoomIn: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 20 20M7.5 10.5h6M10.5 7.5v6"/></svg>`,
+  share: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7.5 7.5 12 3l4.5 4.5M7 11H5.5v9.5h13V11H17"/></svg>`,
+  back: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>`,
+  fwd: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>`,
+  lock: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 10V8a5 5 0 0 1 10 0v2h.5A1.5 1.5 0 0 1 19 11.5v8a1.5 1.5 0 0 1-1.5 1.5h-11A1.5 1.5 0 0 1 5 19.5v-8A1.5 1.5 0 0 1 6.5 10zm2 0h6V8a3 3 0 0 0-6 0z"/></svg>`,
+  ext: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>`,
+  compose: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6"/><path d="M17.5 3.5a2.1 2.1 0 0 1 3 3L12 15l-4 1 1-4z"/></svg>`,
+  folder: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>`,
+  send: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.4 20.4 21 12 3.4 3.6 3.4 10.1 15 12 3.4 13.9z"/></svg>`,
+};
+
+/* ==================== Wallpaper: misty forest lake ==================== */
+function drawWallpaper() {
+  const wrap = document.getElementById("wallWrap");
+  if (WALLPAPER) {
+    wrap.innerHTML = `<img id="wall" src="${WALLPAPER}" alt="">`;
+    document.body.classList.toggle("wall-dark", WALLPAPER_IS_DARK);
+    return;
+  }
+  if (WALLPAPER_STYLE === "solid") { wrap.innerHTML = `<div id="wall" class="wall-solid"></div>`; return; }
+  let s = 7; const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647; // seeded, so it looks the same every visit
+  const W = 1600, H = 1000;
+  const ridgeY = (x, base, amp, k) => base + amp * (Math.sin(x * .004 + k) * .6 + Math.sin(x * .011 + k * 2) * .3 + Math.sin(x * .027 + k * 3) * .1);
+  const hills = (base, amp, k) => { let d = `M0 ${H}`; for (let x = 0; x <= W; x += 20) d += `L${x} ${ridgeY(x, base, amp, k).toFixed(1)}`; return d + `L${W} ${H}Z`; };
+  const forest = (base, amp, k, size) => {
+    let d = hills(base, amp, k);
+    for (let x = -10; x < W + 10; x += 4 + rnd() * 7 * size) {
+      const y = ridgeY(x, base, amp, k) + 2, h = (16 + rnd() * 34) * size, w = h * (.24 + rnd() * .08);
+      d += `M${(x - w).toFixed(1)} ${y.toFixed(1)}L${x.toFixed(1)} ${(y - h).toFixed(1)}L${(x + w).toFixed(1)} ${y.toFixed(1)}Z`;
+    }
+    return d;
+  };
+  const near = forest(600, 26, 9, 1.35);
+  wrap.innerHTML = `<svg id="wall" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b9c8cf"/><stop offset=".45" stop-color="#dfe6e7"/><stop offset=".64" stop-color="#eef0ec"/></linearGradient>
+      <linearGradient id="lake" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a9b9b8"/><stop offset=".5" stop-color="#7f9391"/><stop offset="1" stop-color="#4e6260"/></linearGradient>
+      <linearGradient id="fog" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f6f4" stop-opacity="0"/><stop offset=".5" stop-color="#f4f6f4" stop-opacity=".85"/><stop offset="1" stop-color="#f4f6f4" stop-opacity="0"/></linearGradient>
+      <linearGradient id="shore" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#53684f" stop-opacity="0"/><stop offset="1" stop-color="#3b4d3a" stop-opacity=".85"/></linearGradient>
+      <radialGradient id="glow" cx=".72" cy=".28" r=".45"><stop offset="0" stop-color="#fffdf6" stop-opacity=".9"/><stop offset="1" stop-color="#fffdf6" stop-opacity="0"/></radialGradient>
+      <filter id="b1"><feGaussianBlur stdDeviation="1.4"/></filter>
+      <filter id="b3"><feGaussianBlur stdDeviation="3"/></filter>
+      <filter id="b18"><feGaussianBlur stdDeviation="18"/></filter>
+    </defs>
+    <rect width="${W}" height="${H}" fill="url(#sky)"/>
+    <rect width="${W}" height="${H}" fill="url(#glow)"/>
+    <path d="${hills(420, 80, 1)}" fill="#a3b3b9" opacity=".6" filter="url(#b3)"/>
+    <rect y="360" width="${W}" height="200" fill="url(#fog)" filter="url(#b18)"/>
+    <path d="${forest(505, 46, 4, .75)}" fill="#7f9290" opacity=".8" filter="url(#b1)"/>
+    <rect y="470" width="${W}" height="150" fill="url(#fog)" opacity=".85" filter="url(#b18)"/>
+    <path d="${near}" fill="#465a55"/>
+    <rect y="640" width="${W}" height="${H - 640}" fill="url(#lake)"/>
+    <path d="${near}" fill="#465a55" opacity=".32" transform="matrix(1 0 0 -1 0 1280)" filter="url(#b3)"/>
+    <rect y="620" width="${W}" height="70" fill="url(#fog)" opacity=".7" filter="url(#b18)"/>
+    <path d="M0 640H${W}" stroke="#eef2ef" stroke-opacity=".35" stroke-width="1.5"/>
+    <rect y="860" width="${W}" height="140" fill="url(#shore)"/>
+  </svg>`;
+}
+drawWallpaper();
+
+/* ==================== Helpers ==================== */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const photo = (key, cls = "") => PHOTOS[key].src
+  ? `<img class="photo ${cls}" src="${esc(PHOTOS[key].src)}" alt="">`
+  : `<div class="ph ${cls}" style="width:100%;height:100%">${esc(PHOTOS[key].hint).replace("\n", "<br>")}</div>`;
+const isMobile = () => matchMedia("(max-width: 767px)").matches;
+const ytThumb = id => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+const video = (id, title) => `<div class="vid"><button class="poster" data-play="${id}" aria-label="Play ${esc(title)}"><img src="${ytThumb(id)}" alt="" loading="lazy"></button></div>`;
+
+/* ==================== The CV document ==================== */
+const rows = list => list.map(x => `<div class="row"><h3>${esc(x.t)}</h3><span class="d">${esc(x.d)}</span><span class="o">${esc(x.o)}</span>
+  ${x.p.length ? `<ul>${x.p.map(p => `<li>${esc(p)}</li>`).join("")}</ul>` : ""}</div>`).join("");
+function cvDoc() {
+  const proj = PROJECTS.filter(p => p.group === "tegas").map(p => ({ t: p.name, d: "2024", o: p.meta.split(" · ").slice(1).join(" · "), p: [p.overview] }));
+  return `<article class="cv">
+    <header>
+      <div class="who">
+        <h1>${esc(ME.name)}</h1>
+        <p class="role">${esc(ME.headline)}</p>
+        <p class="contact">
+          <a href="mailto:${esc(ME.email)}">${esc(ME.email)}</a>
+          <a href="${esc(ME.linkedin)}" target="_blank" rel="noopener">linkedin.com/in/janet-soo-yu-ting</a>
+          <a href="${esc(ME.github)}" target="_blank" rel="noopener">github.com/${esc(ME.githubUser)}</a>
+          <span>Kuala Lumpur, Malaysia</span>
+        </p>
+      </div>
+      <div class="avatar">${photo("avatar")}</div>
+    </header>
+    <section><h2>Education</h2>${rows(EDUCATION)}</section>
+    <section><h2>Experience</h2>${rows(EXPERIENCE)}</section>
+    <section><h2>Projects</h2>${rows(proj)}</section>
+    <section><h2>Honours & awards</h2><div class="awards">${AWARDS.map(([t, d]) => `<span>${esc(t)}</span><span class="d">${esc(d)}</span>`).join("")}</div></section>
+    <section><h2>Skills</h2><dl class="skills">${SKILLS.map(([k, v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join("")}</dl></section>
+  </article>`;
+}
+
+/* ==================== Apps ==================== */
+const state = { app: null, full: false, sidebar: true, zoom: null, folder: "all", project: null, note: "hi", video: VIDEOS[0].id, geo: null,
+  mail: { subject: "Hello Janet", body: "" }, copied: false };
+const mailtoHref = () => `mailto:${ME.email}?subject=${encodeURIComponent(state.mail.subject)}&body=${encodeURIComponent(state.mail.body)}`;
+const gmailHref = () => `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(ME.email)}&su=${encodeURIComponent(state.mail.subject)}&body=${encodeURIComponent(state.mail.body)}`;
+const lights = `<div class="lights"><button class="l-r" data-act="close" aria-label="Close">×</button><button class="l-y" data-act="minimize" aria-label="Minimize">−</button><button class="l-g" data-act="zoom" aria-label="Zoom">+</button></div>`;
+const mBack = `<button class="m-back" data-act="close">‹ Home</button>`;
+
+const APPS = {
+  preview: { label: "Resume", appName: "Preview", view() {
+    return {
+      side: state.sidebar ? `<div class="pv-thumbs"><div class="pv-thumb on"><div class="mini">${cvDoc()}</div><span>1</span></div></div>` : null,
+      bar: `<button class="tbtn" data-act="sidebar" title="Toggle sidebar">${I.sidebar}</button>
+        <div class="w-title"><b>Janet_Soo_Yu_Ting_CV.pdf</b><small>Page 1 of 1</small></div>
+        <span class="pill"><button class="tbtn" data-act="zoomOut" title="Zoom out">${I.zoomOut}</button><i></i><button class="tbtn" data-act="zoomIn" title="Zoom in">${I.zoomIn}</button></span>
+        <span class="pill keep-pill"><a class="tbtn keep" href="${esc(ME.pdf)}" download title="Download PDF">${I.share}</a></span>`,
+      body: `<div class="pv-canvas"><div class="pv-page" id="pvPage">${cvDoc()}</div></div>`,
+    };
+  }, after: fitPreview },
+
+  projects: { label: "Projects", appName: "Finder", view() {
+    const p = PROJECTS.find(x => x.id === state.project);
+    const folders = [["all", "All Projects", PROJECTS.length], ...Object.keys(GROUPS).map(g => [g, GROUPS[g].split(" · ")[0], PROJECTS.filter(x => x.group === g).length])];
+    const current = p ? p.group : state.folder;
+    const side = `<div class="s-sec">Favourites</div>` + folders.map(([k, label, n]) =>
+      `<button class="s-item ${current === k ? "on" : ""}" data-folder="${k}"><span class="s-ico">${I.folder}</span>${esc(label)}<span class="cnt">${n}</span></button>`).join("");
+    const title = state.folder === "all" ? "Projects" : GROUPS[state.folder].split(" · ")[0];
+    const bar = `<span class="pill keep-pill"><button class="tbtn keep" data-act="pjBack" ${p ? "" : "disabled"} title="Back">${I.back}</button><i></i><button class="tbtn" disabled>${I.fwd}</button></span>
+      <div class="w-title"><div class="crumbs">${p ? `<span>${esc(title)} ›</span>${esc(p.short)}` : esc(title)}</div>
+      <small>${p ? esc(GROUPS[p.group]) : `${PROJECTS.filter(x => state.folder === "all" || x.group === state.folder).length} folders`}</small></div>`;
+    if (!p) {
+      // one grid, so folders reflow into empty space when the window is resized
+      const list = PROJECTS.filter(x => state.folder === "all" || x.group === state.folder);
+      return { side, bar, body: `<div class="fd"><p class="fd-sec">${esc(title)}</p><div class="fd-grid">${list.map(x => `
+        <button class="fd-item" data-project="${x.id}">
+          <span class="folder"><span class="back"></span><span class="paper"><img src="${esc(x.cover)}" alt="" loading="lazy"></span><span class="front"></span></span>
+          <span class="fd-name">${esc(x.short)}</span><span class="fd-tag">${esc(GROUPS[x.group])}</span><span class="fd-blurb">${esc(x.blurb)}</span>
+        </button>`).join("")}</div></div>` };
+    }
+    const shot = g => g.src ? `<img src="${esc(g.src)}" alt="" loading="lazy">` : photo(g.photo);
+    return { side, bar, body: `<article class="pj">
+      <div class="pj-hero"><img src="${esc(p.cover)}" alt=""></div>
+      <p class="pj-kicker">${esc(GROUPS[p.group])}</p>
+      <h2>${esc(p.name)}</h2>
+      <p class="meta">${esc(p.meta)}</p>
+      <div class="chips">${p.tech.map(t => `<span class="chip">${esc(t)}</span>`).join("")}</div>
+      <p>${esc(p.overview)}</p>
+      ${p.flow ? `<h4>How it works</h4><div class="flow">${p.flow.map((s, i) => `<div class="${i === p.key ? "key" : ""}">${esc(s)}</div>`).join("")}</div>` : ""}
+      ${p.points ? `<h4>Highlights</h4><ul>${p.points.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}
+      ${p.gallery ? `<h4>Screenshots & photos</h4><div class="gallery">${p.gallery.map((g, i) => `<figure data-ql="${i}"><div class="g-img">${shot(g)}</div><figcaption>${esc(g.cap)}</figcaption></figure>`).join("")}</div>` : ""}
+      ${p.videos ? p.videos.map(([id, t]) => `<h4>${esc(t)}</h4>${video(id, t)}`).join("") : ""}
+    </article>` };
+  } },
+
+  mail: { label: "Email", appName: "Mail", view() {
+    const m = state.mail;
+    return {
+      bar: `<div class="w-title"><b>New Message</b><small>to Janet</small></div>
+        <button class="send keep" data-act="sendGmail">${I.send}Send</button>`,
+      body: `<div class="mail">
+        <div class="m-row"><label>To:</label><span class="to-chip">${esc(ME.name)}</span><span class="muted">${esc(ME.email)}</span><button class="copy" data-act="copyEmail">${state.copied ? "Copied ✓" : "Copy"}</button></div>
+        <div class="m-row"><label for="mSubj">Subject:</label><input id="mSubj" data-mail="subject" value="${esc(m.subject)}"></div>
+        <textarea id="mBody" data-mail="body" placeholder="Write your message…">${esc(m.body)}</textarea>
+        <div class="m-foot"><span>Send opens Gmail with this message ready.</span>
+          <a href="${mailtoHref()}" data-mailto>Use my mail app instead</a></div>
+      </div>`,
+    };
+  } },
+
+  notes: { label: "About", appName: "Notes", view() {
+    const n = NOTES.find(x => x.id === state.note);
+    return {
+      side: `<div class="s-sec">iCloud</div><button class="s-item on"><span class="s-ico" style="color:#e5a500">${I.folder}</span>About Janet<span class="cnt">${NOTES.length}</span></button>`,
+      bar: `<div class="w-title"><b>About Janet</b><small>${NOTES.length} notes</small></div><button class="tbtn" title="New note" disabled>${I.compose}</button>`,
+      body: `<div class="m-tabs">${NOTES.map(x => `<button class="${x.id === n.id ? "on" : ""}" data-note="${x.id}">${esc(x.title)}</button>`).join("")}</div>
+        <div class="notes">
+          <div class="n-list">${NOTES.map(x => `<button class="n-item ${x.id === n.id ? "on" : ""}" data-note="${x.id}"><b>${esc(x.title)}</b><span><em>${esc(x.date)}</em>${esc(x.preview)}</span></button>`).join("")}</div>
+          <div class="n-body"><p class="n-date">${esc(n.date)}</p>${n.body}</div>
+        </div>`,
+    };
+  } },
+
+  videos: { label: "YouTube", appName: "QuickTime Player", dark: true, view() {
+    const v = VIDEOS.find(x => x.id === state.video);
+    return {
+      bar: `<div class="w-title"><b>Videos</b><small>${VIDEOS.length} videos · @jane_jennh</small></div>
+        <span class="pill keep-pill"><a class="tbtn text keep" href="${esc(ME.youtube)}" target="_blank" rel="noopener">Channel ${I.ext}</a></span>`,
+      body: `<div class="yt">
+        <section class="yt-main">
+          ${video(v.id, v.title)}
+          <p class="yt-kind">${esc(v.kind)} · ${esc(v.dur)}</p>
+          <h2 class="yt-title">${esc(v.title)}</h2>
+          <p class="yt-sub">${esc(v.sub)}</p>
+          <a class="yt-open" href="https://youtu.be/${v.id}" target="_blank" rel="noopener">Watch on YouTube ${I.ext}</a>
+        </section>
+        <aside class="yt-list">
+          <p class="yt-h">All videos</p>
+          ${VIDEOS.map(x => `<button class="yt-item ${x.id === v.id ? "on" : ""}" data-video="${x.id}">
+            <span class="yt-thumb"><img src="https://i.ytimg.com/vi/${x.id}/mqdefault.jpg" alt="" loading="lazy"><em>${x.id === v.id ? "Now playing" : esc(x.dur)}</em></span>
+            <span class="yt-meta"><b>${esc(x.title)}</b><small>${esc(x.kind)}</small></span>
+          </button>`).join("")}
+        </aside>
+      </div>`,
+    };
+  } },
+
+  github: { label: "GitHub", appName: "Safari", view() {
+    return { bar: safariBar(`github.com/${ME.githubUser}`, ME.github), body: githubBody() };
+  } },
+
+  linkedin: { label: "LinkedIn", appName: "Safari", view() {
+    return {
+      bar: safariBar("linkedin.com/in/janet-soo-yu-ting", ME.linkedin),
+      body: `<div class="profile">
+        <div class="pic">${photo("avatar")}</div>
+        <h2>${esc(ME.name)}</h2>
+        <p class="hl">Yayasan Khazanah Scholar | Undergraduate in Software Engineering @ Universiti Malaya</p>
+        <p class="muted" style="margin-top:6px">Kuala Lumpur, Malaysia</p>
+        <div class="stats"><div><b>Universiti Malaya</b>Education</div><div><b>Yayasan Khazanah</b>Scholarship</div></div>
+        <a class="btn" href="${esc(ME.linkedin)}" target="_blank" rel="noopener">Connect on LinkedIn ↗</a>
+      </div>`,
+    };
+  } },
+};
+
+function safariBar(addr, href) {
+  return `<span class="pill"><button class="tbtn" disabled>${I.back}</button><i></i><button class="tbtn" disabled>${I.fwd}</button></span>
+    <div class="addr">${I.lock}<span>${esc(addr)}</span></div>
+    <a class="tbtn keep" href="${esc(href)}" target="_blank" rel="noopener" title="Open in a new tab">${I.ext}</a>`;
+}
+
+let gh = null;
+function githubBody() {
+  if (!gh) { loadGitHub(); return `<div class="profile"><p class="muted">Loading…</p></div>`; }
+  if (gh.error) return `<div class="profile"><div class="pic">${photo("avatar")}</div><h2>@${esc(ME.githubUser)}</h2>
+    <p class="muted" style="margin:10px 0 20px">Couldn't reach GitHub right now.</p><a class="btn" href="${esc(ME.github)}" target="_blank" rel="noopener">Open GitHub ↗</a></div>`;
+  const { user: u, repos } = gh;
+  return `<div class="profile">
+    <div class="pic"><img class="photo" src="${esc(u.avatar_url)}" alt=""></div>
+    <h2>${esc(u.name || u.login)}</h2>
+    <p class="hl">@${esc(u.login)}${u.bio ? " · " + esc(u.bio) : ""}</p>
+    <div class="stats"><div><b>${u.public_repos}</b>Repositories</div><div><b>${u.followers}</b>Followers</div><div><b>${u.following}</b>Following</div></div>
+    <a class="btn" href="${esc(u.html_url)}" target="_blank" rel="noopener">View on GitHub ↗</a>
+    <div class="repos">${repos.length ? repos.map(r => `<a class="repo" href="${esc(r.html_url)}" target="_blank" rel="noopener"><b>${esc(r.name)}</b>
+      <span>${esc(r.description || "No description yet")}${r.language ? " · " + esc(r.language) : ""} · ★ ${r.stargazers_count}</span></a>`).join("")
+      : `<p class="muted" style="text-align:center">Public repositories will show up here.</p>`}</div>
+  </div>`;
+}
+async function loadGitHub() {
+  if (loadGitHub.busy) return; loadGitHub.busy = true;
+  try {
+    const base = `https://api.github.com/users/${ME.githubUser}`;
+    const [u, r] = await Promise.all([fetch(base), fetch(`${base}/repos?sort=updated&per_page=8`)]);
+    if (!u.ok || !r.ok) throw 0;
+    gh = { user: await u.json(), repos: (await r.json()).filter(x => !x.fork) };
+  } catch { gh = { error: true }; }
+  if (state.app === "github") render(false);
+}
+
+/* ==================== Window manager (one window) ==================== */
+const win = $("#win"), dock = $("#dock");
+const DOCK = ["preview", "projects", "notes", "videos", "|", "mail", "github", "linkedin"];
+const DOCK_LABEL = { preview: "Resume", projects: "Projects", notes: "About", videos: "YouTube", github: "GitHub", linkedin: "LinkedIn", mail: "Email" };
+
+dock.innerHTML = DOCK.map(id => id === "|" ? `<span class="d-sep"></span>`
+  : `<button class="d-app" data-dock="${id}" aria-label="${DOCK_LABEL[id]}">${icon(id)}<span class="tip">${DOCK_LABEL[id]}</span><span class="lbl">${DOCK_LABEL[id]}</span><span class="dot"></span></button>`).join("");
+const dockEl = id => dock.querySelector(`[data-dock="${id}"]`);
+
+function defaultGeo() {
+  // at least ~70% of the screen, but always leaving room for the dock and a margin
+  const vw = innerWidth, vh = innerHeight, mb = 28, dockRoom = 92;
+  const w = Math.round(Math.min(vw - 48, Math.max(vw * .72, Math.min(1180, vw - 120))));
+  const h = Math.round(Math.min(vh - mb - dockRoom - 16, Math.max(vh * .72, 680)));
+  return { x: Math.round((vw - w) / 2), y: Math.round(mb + Math.max(8, (vh - mb - dockRoom - h) / 2)), w, h };
+}
+function place() {
+  if (isMobile()) return;
+  const g = state.full ? { x: 0, y: 28, w: innerWidth, h: innerHeight - 28 } : state.geo;
+  Object.assign(win.style, { left: g.x + "px", top: g.y + "px", width: g.w + "px", height: g.h + "px" });
+}
+
+function render(fade = true) {
+  const app = APPS[state.app], v = app.view();
+  const showSide = v.side && !isMobile();
+  win.className = "window" + (app.dark ? " dark" : "") + (state.full ? " full" : "") + (win.classList.contains("blur") ? " blur" : "");
+  win.innerHTML = (showSide ? `<aside class="w-side"><div class="side-top" data-drag>${lights}</div><div class="side-scroll">${v.side}</div></aside>` : "") +
+    `<div class="w-main"><div class="w-bar" data-drag>${showSide ? "" : lights}${mBack}${v.bar}</div><div class="w-body${fade ? " fade" : ""}">${v.body}</div></div>`;
+  $("#mbApp").textContent = app.appName;
+  dock.querySelectorAll(".d-app").forEach(el => el.classList.toggle("running", el.dataset.dock === state.app));
+  app.after && app.after();
+}
+
+function fitPreview() {
+  const page = $("#pvPage"); if (!page || isMobile()) return;
+  const avail = page.parentElement.clientWidth - 48;
+  if (state.zoom == null) state.zoom = Math.min(1, avail / 794);
+  page.style.setProperty("--z", state.zoom);
+}
+
+function fromDock(id, reverse) {
+  const icon = dockEl(id); if (!icon || isMobile()) return win.animate([{ opacity: 0, transform: "scale(.94)" }, { opacity: 1, transform: "none" }], { duration: 260, easing: "ease-out", direction: reverse ? "reverse" : "normal" }).finished;
+  const r = icon.getBoundingClientRect(), w = win.getBoundingClientRect();
+  win.style.transformOrigin = `${r.left + r.width / 2 - w.left}px ${r.top + r.height / 2 - w.top}px`;
+  const a = win.animate([{ transform: "scale(.06)", opacity: 0 }, { transform: "scale(1)", opacity: 1 }],
+    { duration: reverse ? 320 : 460, easing: reverse ? "cubic-bezier(.5,0,.75,0)" : "cubic-bezier(.2,.9,.25,1.04)", direction: reverse ? "reverse" : "normal" });
+  return a.finished;
+}
+
+function openApp(id) {
+  if (!win.hidden) {
+    if (id !== state.app) { state.app = id; state.zoom = null; render(); }
+    focusWin(true); return;
+  }
+  state.app = id; state.zoom = null;
+  const d = defaultGeo();
+  if (!state.geo || state.geo.w < d.w * .9 || state.geo.h < d.h * .9) state.geo = d;
+  state.vw = innerWidth;
+  win.hidden = false; place(); render(false); focusWin(true);
+  document.body.classList.add("win-open"); // Janet ducks behind the dock
+  fromDock(id);
+}
+function closeWin(minimize) {
+  if (win.hidden) return;
+  const done = () => { win.hidden = true; state.full = false; $("#mbApp").textContent = ME.name; document.body.classList.remove("win-open"); dock.querySelectorAll(".d-app").forEach(el => el.classList.remove("running")); };
+  if (minimize) fromDock(state.app, true).then(done);
+  else win.animate([{ opacity: 1, transform: "none" }, { opacity: 0, transform: "scale(.97)" }], { duration: 170, easing: "ease-in" }).finished.then(done);
+}
+function focusWin(on) { win.classList.toggle("blur", !on); if (!win.hidden) $("#mbApp").textContent = on ? APPS[state.app].appName : ME.name; }
+
+/* ---------- Folders slide into their new place when the grid reflows ---------- */
+let lastRects = new Map();
+new ResizeObserver(() => {
+  const items = win.querySelectorAll(".fd-item");
+  const next = new Map();
+  items.forEach(el => {
+    const r = el.getBoundingClientRect(), wr = win.getBoundingClientRect();
+    const pos = { x: r.left - wr.left, y: r.top - wr.top };
+    const old = lastRects.get(el.dataset.project);
+    if (old && el.isConnected && (Math.abs(old.x - pos.x) > 40 || Math.abs(old.y - pos.y) > 40))
+      el.animate([{ transform: `translate(${old.x - pos.x}px,${old.y - pos.y}px)` }, { transform: "none" }], { duration: 420, easing: "cubic-bezier(.2,.9,.25,1.05)" });
+    next.set(el.dataset.project, pos);
+  });
+  lastRects = next;
+}).observe(win);
+
+/* ---------- Quick Look for project images ---------- */
+const ql = $("#ql");
+// Browse a project's photos without closing: ← → keys, the side buttons, or a swipe on phones
+let qlIndex = 0;
+const qlList = () => PROJECTS.find(x => x.id === state.project).gallery;
+function quickLook(i, dir = 0) {
+  const list = qlList();
+  qlIndex = (i + list.length) % list.length;
+  const g = list[qlIndex];
+  const media = g.src ? `<img class="${dir ? "slide" : ""}" style="--from:${dir * 40}px" src="${esc(g.src)}" alt="${esc(g.cap)}">`
+    : `<div class="ph" style="width:min(420px,80vw);height:320px;border-radius:10px">${esc(PHOTOS[g.photo].hint).replace("\n", "<br>")}</div>`;
+  ql.innerHTML = (list.length > 1 ? `<button class="ql-nav ql-prev" data-ql-step="-1" aria-label="Previous photo">${I.back}</button><button class="ql-nav ql-next" data-ql-step="1" aria-label="Next photo">${I.fwd}</button>` : "") +
+    `<button class="ql-nav ql-close" data-ql-close aria-label="Close">×</button>
+    <figure>${media}<figcaption>${esc(g.cap)}<span>${qlIndex + 1} / ${list.length}</span></figcaption></figure>
+    ${list.length > 1 ? `<p class="ql-hint"><kbd>←</kbd> <kbd>→</kbd> to browse · <kbd>esc</kbd> to close</p>` : ""}`;
+  ql.classList.add("show");
+}
+const qlStep = d => quickLook(qlIndex + d, d);
+ql.addEventListener("click", e => {
+  const step = e.target.closest("[data-ql-step]");
+  if (step) return qlStep(+step.dataset.qlStep);
+  if (e.target.closest("[data-ql-close]") || !e.target.closest("figure")) ql.classList.remove("show"); // clicking the dark backdrop closes
+});
+document.addEventListener("keydown", e => {
+  if (!ql.classList.contains("show")) return;
+  if (e.key === "ArrowRight") { e.preventDefault(); qlStep(1); }
+  if (e.key === "ArrowLeft") { e.preventDefault(); qlStep(-1); }
+});
+let qlTouchX = null;
+ql.addEventListener("touchstart", e => { qlTouchX = e.touches[0].clientX; }, { passive: true });
+ql.addEventListener("touchend", e => {
+  if (qlTouchX === null) return;
+  const dx = e.changedTouches[0].clientX - qlTouchX; qlTouchX = null;
+  if (Math.abs(dx) > 40) qlStep(dx < 0 ? 1 : -1);
+});
+
+/* ---------- Mail ---------- */
+document.addEventListener("input", e => { const k = e.target.dataset.mail; if (k) { state.mail[k] = e.target.value; const a = win.querySelector("[data-mailto]"); if (a) a.href = mailtoHref(); } });
+async function copyEmail() {
+  try { await navigator.clipboard.writeText(ME.email); } catch { prompt("Copy Janet's email:", ME.email); }
+  state.copied = true; render(false); setTimeout(() => { state.copied = false; if (state.app === "mail" && !win.hidden) render(false); }, 1800);
+}
+
+/* ---------- Menus ---------- */
+const MENUS = {
+  j: [["About This Portfolio", "open:notes"], ["Recruiter Mode", "recruiter"], "-", ["Download CV (PDF)", "download"]],
+  file: [["Open Resume", "open:preview", "⌘O"], ["Download CV (PDF)", "download"], ["Email Janet…", "open:mail"], "-", ["Close Window", "close", "esc"]],
+  go: [["Resume", "open:preview"], ["Projects", "open:projects"], ["About", "open:notes"], ["YouTube", "open:videos"], "-", ["Email", "open:mail"], ["GitHub", "open:github"], ["LinkedIn", "open:linkedin"]],
+  help: [["Double-click a title bar to zoom", ""], ["Drag windows and photos around", ""], ["Esc closes the window", ""]],
+};
+const menu = $("#menu"); let openMenu = null;
+function showMenu(btn) {
+  const key = btn.dataset.menu;
+  document.querySelectorAll(".mb-item.open").forEach(b => b.classList.remove("open"));
+  if (openMenu === key) { hideMenu(); return; }
+  openMenu = key; btn.classList.add("open");
+  menu.innerHTML = MENUS[key].map(m => m === "-" ? "<hr>" : `<button data-act="${m[1]}" ${m[1] ? "" : "disabled"}>${esc(m[0])}${m[2] ? `<kbd>${m[2]}</kbd>` : ""}</button>`).join("");
+  menu.style.left = btn.getBoundingClientRect().left + "px"; menu.style.top = "26px"; menu.classList.add("show");
+}
+function hideMenu() { openMenu = null; menu.classList.remove("show"); document.querySelectorAll(".mb-item.open").forEach(b => b.classList.remove("open")); }
+document.querySelectorAll("[data-menu]").forEach(b => b.addEventListener("mouseenter", () => { if (openMenu && openMenu !== b.dataset.menu) { openMenu = null; showMenu(b); } }));
+
+/* ---------- Actions ---------- */
+function download() { const a = document.createElement("a"); a.href = ME.pdf; a.download = ""; a.click(); }
+function act(a) {
+  if (!a) return;
+  if (a.startsWith("open:")) return openApp(a.slice(5));
+  ({
+    close: () => isMobile() || state.app ? closeWin(false) : 0,
+    minimize: () => closeWin(true),
+    zoom: () => { state.full = !state.full; win.classList.toggle("full", state.full); place(); setTimeout(() => { state.zoom = null; fitPreview(); }, 400); },
+    sidebar: () => { state.sidebar = !state.sidebar; render(false); },
+    zoomIn: () => { state.zoom = Math.min(2, +(state.zoom + .1).toFixed(2)); fitPreview(); },
+    zoomOut: () => { state.zoom = Math.max(.4, +(state.zoom - .1).toFixed(2)); fitPreview(); },
+    pjBack: () => { state.project = null; render(); },
+    sendGmail: () => open(gmailHref(), "_blank", "noopener"),
+    copyEmail,
+    recruiter: () => setRecruiter(!document.body.classList.contains("recruiter")),
+    download,
+    dismissHint: () => hideRecHint(),
+  })[a]?.();
+}
+
+document.addEventListener("click", e => {
+  const t = e.target.closest("[data-menu],[data-act],[data-dock],[data-project],[data-folder],[data-note],[data-video],[data-play],[data-ql]");
+  if (!t) { if (!e.target.closest("#menu")) hideMenu(); return; }
+  if (t.dataset.menu) return showMenu(t);
+  if (t.closest("#menu")) hideMenu();
+  if (t.dataset.act) act(t.dataset.act);
+  if (t.dataset.dock) openApp(t.dataset.dock);
+  if (t.dataset.project) { state.project = t.dataset.project; render(); win.querySelector(".w-body").scrollTop = 0; }
+  if (t.dataset.folder) { state.folder = t.dataset.folder; state.project = null; render(); }
+  if (t.dataset.ql) quickLook(+t.dataset.ql);
+  if (t.dataset.note) { state.note = t.dataset.note; render(false); }
+  if (t.dataset.video) { state.video = t.dataset.video; render(false); }
+  if (t.dataset.play) t.parentElement.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${t.dataset.play}?autoplay=1&rel=0" title="Video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+});
+document.addEventListener("keydown", e => {
+  if (e.key !== "Escape") return;
+  if (openMenu) hideMenu(); else if (ql.classList.contains("show")) ql.classList.remove("show"); else closeWin(false);
+});
+document.addEventListener("pointerdown", e => {
+  if (win.hidden) return;
+  if (win.contains(e.target)) focusWin(true);
+  else if (!e.target.closest(".dock,.menubar,#menu,#ql")) focusWin(false);
+});
+
+/* ---------- Dragging: window + desktop widgets ---------- */
+function dragger(el, getPos, setPos, onStart, handle) {
+  el.addEventListener("pointerdown", e => {
+    if (isMobile() || e.button !== 0 || e.target.closest("button,a,input,iframe")) return;
+    if (handle && !e.target.closest(handle)) return;
+    const start = getPos(), sx = e.clientX, sy = e.clientY; let moved = false;
+    const move = ev => {
+      const dx = ev.clientX - sx, dy = ev.clientY - sy;
+      if (!moved && Math.hypot(dx, dy) < 3) return;
+      if (!moved) { moved = true; onStart && onStart(); }
+      setPos(start.x + dx, start.y + dy);
+    };
+    const up = () => { removeEventListener("pointermove", move); removeEventListener("pointerup", up); win.classList.remove("dragging"); };
+    addEventListener("pointermove", move); addEventListener("pointerup", up);
+  });
+}
+dragger(win, () => ({ x: state.geo.x, y: state.geo.y }), (x, y) => {
+  state.geo.x = Math.max(-state.geo.w + 120, Math.min(innerWidth - 120, x));
+  state.geo.y = Math.max(28, Math.min(innerHeight - 60, y)); place();
+}, () => { win.classList.add("dragging"); if (state.full) { state.full = false; win.classList.remove("full"); } }, "[data-drag]");
+win.addEventListener("dblclick", e => { if (e.target.closest("[data-drag]") && !e.target.closest("button,a")) act("zoom"); });
+
+/* ---------- Desktop widgets ---------- */
+function calendar() {
+  const d = new Date(), y = d.getFullYear(), m = d.getMonth(), first = new Date(y, m, 1).getDay(), days = new Date(y, m + 1, 0).getDate();
+  const cells = ["S", "M", "T", "W", "T", "F", "S"].map(x => `<b>${x}</b>`).concat(Array(first).fill("<span></span>"));
+  for (let i = 1; i <= days; i++) { const wd = (first + i - 1) % 7; cells.push(`<span class="${i === d.getDate() ? "today" : wd === 0 || wd === 6 ? "we" : ""}">${i}</span>`); }
+  return `<p class="m">${d.toLocaleDateString("en-GB", { month: "long" })}</p><div class="g">${cells.join("")}</div>`;
+}
+const WIDGETS = [
+  { cls: "glass w-clock", pos: "left:4.5vw;top:calc(var(--mb-h) + 4vh)", r: "0deg", html: `<p class="k">Kuala Lumpur</p><p class="t" id="wTime"></p><p class="d" id="wDate"></p>` },
+  { cls: "glass cal w-cal", pos: "left:4.5vw;top:calc(var(--mb-h) + 4vh + 168px)", r: "0deg", html: calendar() },
+  { cls: "polaroid w-tegas", pos: "right:6vw;top:11vh", r: "4deg", html: `${photo("tegas")}<p class="cap">2nd Runner-up · TEGAS '24</p>` },
+  { cls: "polaroid w-um", pos: "right:17vw;top:34vh", r: "-6deg", html: `${photo("avatar")}<p class="cap">the real me :)</p>` },
+  { cls: "sticky w-sticky", pos: "right:4vw;bottom:12vh", r: "-3deg", html: `I asked ChatGPT what to study.<br>It said Software Engineering.<small>best prompt I ever wrote</small>` },
+  { cls: "glass w-now", pos: "left:4.5vw;bottom:14vh", r: "0deg", html: `<p class="k">Currently</p><ul>
+      <li><i></i>Year 1 · Software Engineering @ UM</li><li><i class="o"></i>Yayasan Khazanah Watan Scholar</li><li><i class="b"></i>Building this portfolio</li></ul>` },
+];
+$("#widgets").innerHTML = WIDGETS.map((w, i) => `<div class="widget ${w.cls} intro-item" style="${w.pos};transition-delay:${.22 + i * .07}s"><div class="inner" style="--r:${w.r}">${w.html}</div></div>`).join("");
+document.querySelectorAll(".widget").forEach(w => {
+  let off = { x: 0, y: 0 };
+  dragger(w, () => off, (x, y) => { off = { x, y }; w.style.translate = `${x}px ${y}px`; }, () => { w.style.transitionDelay = "0s"; w.style.zIndex = ++dragger.z || (dragger.z = 6); });
+});
+
+/* ---------- Dock magnification (neighbours grow too) ---------- */
+const BASE = 52, MAX = 80, RANGE = 150;
+dock.addEventListener("mousemove", e => {
+  if (isMobile()) return;
+  dock.querySelectorAll(".d-app").forEach(a => {
+    const r = a.getBoundingClientRect(), d = Math.abs(e.clientX - (r.left + r.width / 2));
+    const f = Math.max(0, 1 - d / RANGE);
+    a.style.setProperty("--s", BASE + (MAX - BASE) * (Math.cos((1 - f) * Math.PI / 2) ** 2) + "px");
+  });
+});
+dock.addEventListener("mouseleave", () => dock.querySelectorAll(".d-app").forEach(a => a.style.removeProperty("--s")));
+
+/* ---------- Janet: looks at the mouse, glances around when idle, talks when clicked ---------- */
+// Draft lines — rewrite them in your own voice. Each is a function so it can use the time or the screen size.
+function klTimeLine() {
+  const kl = { timeZone: "Asia/Kuala_Lumpur" };
+  const h = +new Date().toLocaleString("en-US", { ...kl, hour: "numeric", hour12: false }) % 24;
+  const t = new Date().toLocaleTimeString("en-US", { ...kl, hour: "numeric", minute: "2-digit" });
+  if (h < 6) return `It's ${t} in Kuala Lumpur. I'm probably still debugging 🌙`;
+  if (h < 12) return "Good morning from Kuala Lumpur ☀️";
+  if (h < 18) return `It's ${t} here in KL. Probably in class right now 📚`;
+  return "Evening in KL. Perfect time to ship something ✨";
+}
+const LINES = [
+  () => "Hi, I'm Janet 👋 Software Engineering @ Universiti Malaya. Click me again!",
+  () => "Want my CV? Click the document icon below, or switch on Recruiter Mode up top.",
+  () => "Fun fact: ChatGPT picked my major. Best prompt I ever wrote.",
+  () => "我爱买拼多多，因为爱拼才会赢。",
+  () => "My robot arm is in the blue folder. It won 2nd Runner-up 🤖",
+  () => isMobile() ? null : "That's the real me on the polaroid 👉",
+  klTimeLine,
+  () => "Say hi through the mail icon. I'll write back ✉️",
+];
+
+const jBtn = $("#janet"), jSprite = $("#jSprite"), bubble = $("#bubble"), bText = $("#bubbleText");
+let lineNo = 0, typing = null, hideTimer = null, fullText = "";
+function say(text) {
+  clearInterval(typing); clearTimeout(hideTimer);
+  fullText = text; const chars = Array.from(text); let i = 0;
+  bText.textContent = ""; bubble.classList.remove("done"); bubble.classList.add("show");
+  typing = setInterval(() => { bText.textContent += chars[i++]; if (i >= chars.length) finishLine(); }, 28);
+}
+function finishLine() {
+  clearInterval(typing); typing = null;
+  bText.textContent = fullText; bubble.classList.add("done");
+  hideTimer = setTimeout(() => bubble.classList.remove("show"), 8000);
+}
+function talk() {
+  if (document.body.classList.contains("win-open")) return;
+  if (typing) return finishLine(); // first click finishes the sentence, like an RPG
+  let line = null;
+  for (let tries = 0; !line && tries < LINES.length; tries++) line = LINES[lineNo++ % LINES.length]();
+  say(line);
+  jBtn.classList.remove("hop"); void jBtn.offsetWidth; jBtn.classList.add("hop");
+}
+jBtn.addEventListener("click", talk);
+bubble.addEventListener("click", talk);
+jBtn.addEventListener("animationend", e => { if (e.animationName === "hop") jBtn.classList.remove("hop"); });
+
+// 9 frames: 0 looks to the viewer's left, 4 straight ahead, 8 to the right. Step one frame at a time so turning looks smooth.
+let frame = 4, frameTarget = 4, lastMove = 0;
+setInterval(() => { if (frame !== frameTarget) { frame += Math.sign(frameTarget - frame); jSprite.style.setProperty("--f", frame); } }, 45);
+const clamp = v => Math.max(-1, Math.min(1, v));
+addEventListener("pointermove", e => {
+  if (e.pointerType !== "mouse") return;
+  const r = jSprite.getBoundingClientRect();
+  const dx = clamp((e.clientX - (r.left + r.width / 2)) / (innerWidth * .42));
+  const dy = clamp((e.clientY - (r.top + r.height * .35)) / (innerHeight * .5));
+  frameTarget = Math.round((dx + 1) * 4);
+  jSprite.style.setProperty("--tilt", (dx * 2.5).toFixed(2) + "deg");
+  jSprite.style.setProperty("--lift", (dy * 4).toFixed(1) + "px");
+  lastMove = Date.now();
+});
+// when nobody moves the mouse (or on touch screens) she glances around now and then
+setInterval(() => {
+  if (Date.now() - lastMove < 5000 || document.body.classList.contains("win-open")) return;
+  jSprite.style.setProperty("--tilt", "0deg"); jSprite.style.setProperty("--lift", "0px");
+  frameTarget = [1, 2, 6, 7][Math.floor(Math.random() * 4)];
+  setTimeout(() => { if (Date.now() - lastMove >= 5000) frameTarget = 4; }, 1400);
+}, 4200);
+
+/* ---------- Recruiter mode ---------- */
+$("#recPdf").href = ME.pdf;
+function setRecruiter(on) {
+  document.body.classList.toggle("recruiter", on);
+  document.querySelectorAll(".rec").forEach(b => b.setAttribute("aria-pressed", on));
+  if (on) {
+    const p = $("#recPage"); p.innerHTML = cvDoc();
+    p.style.setProperty("--z", Math.min(1, (innerWidth - 32) / 794));
+  }
+  hideMenu(); hideRecHint();
+  try { localStorage.setItem("recruiter", on ? "1" : "0"); } catch {}
+  const u = new URL(location.href); on ? u.searchParams.set("mode", "recruiter") : u.searchParams.delete("mode"); history.replaceState(null, "", u);
+}
+
+// First visit in a session: the toggle pulses and a hint points at it, so no recruiter misses it
+const recHint = $("#recHint"), recBtn = $("#menubar .rec");
+let recHintTimer = null;
+function showRecHint() {
+  try { if (sessionStorage.getItem("recHint")) return; sessionStorage.setItem("recHint", "1"); } catch {}
+  if (document.body.classList.contains("recruiter")) return;
+  const r = recBtn.getBoundingClientRect();
+  recHint.style.right = Math.max(10, innerWidth - r.right) + "px";
+  recHint.style.setProperty("--arrow", Math.max(14, r.width / 2 - 6) + "px");
+  recHint.classList.add("show"); recBtn.classList.add("pulse");
+  recHintTimer = setTimeout(hideRecHint, 9000);
+}
+function hideRecHint() { clearTimeout(recHintTimer); recHint.classList.remove("show"); recBtn.classList.remove("pulse"); }
+recBtn.addEventListener("animationend", () => recBtn.classList.remove("pulse"));
+
+/* ---------- Clock & resize ---------- */
+function tick() {
+  const d = new Date();
+  const t = d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  $("#clock").textContent = d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" }) + "  " + t;
+  $("#clockM").textContent = t;
+  // the desktop clock widget shows Janet's time, wherever the visitor is
+  const kl = { timeZone: "Asia/Kuala_Lumpur" };
+  const [hm, ap] = d.toLocaleTimeString("en-US", { ...kl, hour: "numeric", minute: "2-digit" }).split(" ");
+  $("#wTime").innerHTML = `${hm}<small>${ap}</small>`;
+  $("#wDate").innerHTML = `${d.toLocaleDateString("en-GB", { ...kl, weekday: "long" })} <span>${d.toLocaleDateString("en-GB", { ...kl, day: "numeric", month: "long" })}</span>`;
+}
+tick(); setInterval(tick, 15000);
+addEventListener("resize", () => {
+  if (!state.geo) return;
+  // re-size to fit the new screen (it used to only shrink, so a narrow moment left it tiny for good);
+  // keep a dragged window roughly where it was
+  const g = state.geo, d = defaultGeo(), cx = (g.x + g.w / 2) / (state.vw || innerWidth);
+  g.w = d.w; g.h = d.h;
+  g.x = Math.round(Math.min(Math.max(0, cx * innerWidth - g.w / 2), innerWidth - g.w));
+  g.y = Math.max(28, Math.min(g.y, innerHeight - g.h - 40));
+  state.vw = innerWidth;
+  if (!win.hidden) { place(); render(false); }
+});
+
+/* ---------- Intro: name → Janet rises from behind the dock and says hi (or: dock bounce → Resume opens) ---------- */
+(function intro() {
+  let stored = false, seen = false;
+  try { stored = localStorage.getItem("recruiter") === "1"; seen = sessionStorage.getItem("seen") === "1"; sessionStorage.setItem("seen", "1"); } catch {}
+  if (new URLSearchParams(location.search).get("mode") === "recruiter" || stored) setRecruiter(true);
+  requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add("in")));
+  setTimeout(() => document.body.classList.add("in"), 120); // in case animation frames are paused (background tab)
+  setTimeout(showRecHint, 2200); // after the name and Janet have appeared
+  if (!AUTO_OPEN_RESUME) { setTimeout(talk, seen ? 500 : 1500); return; }
+  if (seen || matchMedia("(prefers-reduced-motion: reduce)").matches) { setTimeout(() => openApp("preview"), 150); return; }
+  const icon = dockEl("preview");
+  const timers = [
+    setTimeout(() => icon.classList.add("bounce"), 650),
+    setTimeout(() => { icon.classList.remove("bounce"); openApp("preview"); }, 1150),
+  ];
+  const skip = () => { timers.forEach(clearTimeout); icon.classList.remove("bounce"); if (win.hidden) openApp("preview"); };
+  addEventListener("keydown", skip, { once: true });
+  addEventListener("pointerdown", e => { if (!e.target.closest(".dock,.menubar")) skip(); else timers.forEach(clearTimeout); }, { once: true });
+})();
+</script>
+</body>
+</html>
